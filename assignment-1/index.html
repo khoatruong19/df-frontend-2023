@@ -5,10 +5,101 @@
     <meta name="viewport" content="width=device-width" />
     <title>Bookstore</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
 
   <body>
-    Hello world
+    <header>
+        <h1>Bookstore</h1>
+        <div>
+            <img alt="avatar-img" src="https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-File.png"/>
+            <span>Khoa Truong</span>
+        </div>
+    </header>
+
+    <main>
+      <section id="actions">
+          <form action="">
+            <input type="text" placeholder="Search books" />
+          </form>
+          <button onclick='openModal("add-book")'>Add book</button> 
+      </section>
+
+      <section id="books">
+        <table>
+          <thead>
+            <tr>
+              <th class="book-id">Id</th>
+              <th class="book-name">Name</th>
+              <th class="book-author">Author</th>
+              <th class="book-topic">Topic</th>
+              <th class="book-actions">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td class="book-actions">Delete</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Alfreds Futterkiste</td>
+              <td>Maria Anders</td>
+              <td>Germany</td>
+              <td class="book-actions">Delete</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <aside id="modals" class="modal-close">
+        <div class="modal-content-wrapper">
+          <div class="modal-close delete-book-confirmation">
+            <h2>Delete book</h2>
+            <p class="confirmation-content">
+              Do you want to delete <span class="delete-book-name">sdfsdfdf</span> book?
+            </p>
+            <div class="confirmation-actions">
+              <button class="delete">Delete</button>
+              <button class="cancel">Cancel</button>
+            </div>
+          </div>
+
+          
+        <div class="modal-close add-book">
+          <h2>Add book</h2>
+
+          <form action="">
+            <div class="field-control">
+              <label>Name</label>
+              <input type="text" placeholder="Book name..." required/>
+            </div>
+            <div class="field-control">
+              <label>Author</label>
+              <input type="text" placeholder="Author..." required/>
+            </div>
+            <div class="field-control">
+              <label>Topic</label>
+              <input type="text" placeholder="Book topic..." />
+            </div>
+
+            <button type="submit">Create</button>
+          </form>
+        </div>
+
+          <button class="close-modal" onclick="closeModal()">
+            <i class="fa-solid fa-xmark fa-xl"></i>
+          </button>
+        </div>
+
+
+    </aside>
+
+
     <script src="script.js"></script>
   </body>
 </html>
