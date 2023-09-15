@@ -2,11 +2,12 @@ const modalsElement = document.getElementById('modals');
 const addBookFormElement = document.getElementById('add-book-form');
 const booksTableBodyElement = document.getElementById('books-table-body');
 const deleteBookNameElement = document.getElementById('delete-book-name');
+const searchInputElement = document.getElementById('search');
 
 const DELETE_BOOKS_CONFIRMATION_CLASSNAME = 'delete-book-confirmation';
 
 let modalOpeningClassName = '';
-let selectedBookIndex = 0;
+let selectedBookId = '';
 
 const books = localStorage.getItem('books')
   ? JSON.parse(localStorage.getItem('books'))
@@ -42,22 +43,28 @@ const closeModal = () => {
   modalElement.classList.toggle('modal-close');
 };
 
-const openDeleteBookModal = (index) => {
-  if (!books[selectedBookIndex]) return;
+const openDeleteBookModal = (id) => {
+  const existingBookIndex = books.findIndex((item) => item.id === id);
+  if (existingBookIndex < 0) return;
+
   openModal(DELETE_BOOKS_CONFIRMATION_CLASSNAME);
-  selectedBookIndex = index;
-  deleteBookNameElement.innerText = books[selectedBookIndex].name;
+  selectedBookId = id;
+  deleteBookNameElement.innerText = books[existingBookIndex].name;
 };
 
 const saveBooksToLocalStorage = () => {
   localStorage.setItem('books', JSON.stringify(books));
 };
 
-const deleteBookByIndex = () => {
-  if (!books[selectedBookIndex]) return;
-  books.splice(selectedBookIndex, 1);
+const deleteBookById = () => {
+  const existingBookIndex = books.findIndex(
+    (item) => item.id === selectedBookId
+  );
+  if (existingBookIndex < 0) return;
+
+  books.splice(existingBookIndex, 1);
   saveBooksToLocalStorage();
-  renderBookRows();
+  searchBooks();
   closeModal();
 };
 
@@ -67,17 +74,15 @@ const addBookRowHTML = (book, order) => {
   <td>${book.name}</td>
   <td>${book.author}</td>
   <td>${book.topic}</td>
-  <td class="book-actions" onclick='openDeleteBookModal(${
-    order - 1
-  })'>Delete</td>
+  <td class="book-actions" onclick=openDeleteBookModal('${book.id}')>Delete</td>
 </tr>`;
 
   booksTableBodyElement.innerHTML =
     booksTableBodyElement.innerHTML + bookRowHTML;
 };
-const renderBookRows = () => {
+const renderBookRows = (booksData) => {
   booksTableBodyElement.innerHTML = '';
-  books.forEach((item, index) => {
+  booksData.forEach((item, index) => {
     addBookRowHTML(item, index + 1);
   });
 };
@@ -102,10 +107,40 @@ addBookFormElement.addEventListener('submit', (e) => {
   const bookTopicInput = document.getElementById('book-topic');
 
   addBook({
+    id: bookAuthorInput.value + bookNameInput.value + Math.random(),
     name: bookNameInput.value,
     author: bookAuthorInput.value,
     topic: bookTopicInput.value,
   });
 });
 
-renderBookRows();
+const debounce = (func, delay = 100) => {
+  let timer;
+
+  return function (...args) {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
+const searchBooks = () => {
+  const searchValue = searchInputElement.value.toLowerCase();
+
+  const searchedBooks = books.filter(
+    (book) =>
+      book.name.includes(searchValue) || book.author.includes(searchValue)
+  );
+
+  renderBookRows(searchedBooks);
+};
+
+const onSearchInput = debounce(searchBooks, 500);
+
+searchInputElement.addEventListener('input', () => {
+  onSearchInput();
+});
+
+renderBookRows(books);
