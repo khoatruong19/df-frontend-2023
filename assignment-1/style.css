@@ -134,6 +134,14 @@ th {
   width: 15%;
 }
 
+#books td.book-actions {
+  cursor: pointer;
+}
+
+#books td.book-actions:hover {
+  opacity: 0.7;
+}
+
 #books > table td.book-actions {
   color: red;
   text-decoration: underline;

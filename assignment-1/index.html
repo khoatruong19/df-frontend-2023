@@ -42,14 +42,14 @@
               <td>Alfreds Futterkiste</td>
               <td>Maria Anders</td>
               <td>Germany</td>
-              <td class="book-actions">Delete</td>
+              <td class="book-actions" onclick='openModal("delete-book-confirmation")'>Delete</td>
             </tr>
             <tr>
               <td>2</td>
               <td>Alfreds Futterkiste</td>
               <td>Maria Anders</td>
               <td>Germany</td>
-              <td class="book-actions">Delete</td>
+              <td class="book-actions" onclick='openModal("delete-book-confirmation")'>Delete</td>
             </tr>
           </tbody>
         </table>
@@ -65,7 +65,7 @@
             </p>
             <div class="confirmation-actions">
               <button class="delete">Delete</button>
-              <button class="cancel">Cancel</button>
+              <button class="cancel" onclick="closeModal()">Cancel</button>
             </div>
           </div>
 
