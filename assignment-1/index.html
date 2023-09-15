@@ -29,28 +29,14 @@
         <table>
           <thead>
             <tr>
-              <th class="book-id">Id</th>
+              <th class="book-id">ID</th>
               <th class="book-name">Name</th>
               <th class="book-author">Author</th>
               <th class="book-topic">Topic</th>
               <th class="book-actions">Action</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Alfreds Futterkiste</td>
-              <td>Maria Anders</td>
-              <td>Germany</td>
-              <td class="book-actions" onclick='openModal("delete-book-confirmation")'>Delete</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Alfreds Futterkiste</td>
-              <td>Maria Anders</td>
-              <td>Germany</td>
-              <td class="book-actions" onclick='openModal("delete-book-confirmation")'>Delete</td>
-            </tr>
+          <tbody id="books-table-body">
           </tbody>
         </table>
       </section>
@@ -61,10 +47,10 @@
           <div class="modal-close delete-book-confirmation">
             <h2>Delete book</h2>
             <p class="confirmation-content">
-              Do you want to delete <span class="delete-book-name">sdfsdfdf</span> book?
+              Do you want to delete <span id="delete-book-name"></span> book?
             </p>
             <div class="confirmation-actions">
-              <button class="delete">Delete</button>
+              <button class="delete" onclick="deleteBookByIndex()">Delete</button>
               <button class="cancel" onclick="closeModal()">Cancel</button>
             </div>
           </div>
@@ -73,18 +59,18 @@
         <div class="modal-close add-book">
           <h2>Add book</h2>
 
-          <form action="">
+          <form action="" id="add-book-form">
             <div class="field-control">
               <label>Name</label>
-              <input type="text" placeholder="Book name..." required/>
+              <input id="book-name" type="text" placeholder="Book name..." required/>
             </div>
             <div class="field-control">
               <label>Author</label>
-              <input type="text" placeholder="Author..." required/>
+              <input id="book-author" type="text" placeholder="Author..." required/>
             </div>
             <div class="field-control">
               <label>Topic</label>
-              <input type="text" placeholder="Book topic..." />
+              <input id="book-topic" type="text" placeholder="Book topic..." />
             </div>
 
             <button type="submit">Create</button>

@@ -195,6 +195,10 @@ th {
   text-align: center;
 }
 
+#delete-book-name {
+  font-weight: 600;
+}
+
 #modals .delete-book-confirmation > .confirmation-actions {
   display: flex;
   gap: 0.5rem;
