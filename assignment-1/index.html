@@ -27,7 +27,7 @@
         <table>
           <thead>
             <tr>
-              <th class="book-id">ID</th>
+              <th class="book-id">#</th>
               <th class="book-name">Name</th>
               <th class="book-author">Author</th>
               <th class="book-topic">Topic</th>
@@ -35,6 +35,7 @@
             </tr>
           </thead>
           <tbody id="books-table-body">
+            <div class="end-book-row"></div>
           </tbody>
         </table>
       </section>
@@ -54,26 +55,37 @@
           </div>
 
           
-        <div class="modal-close add-book">
-          <h2>Add book</h2>
+          <div class="modal-close add-book">
+            <h2>Add book</h2>
 
-          <form action="" id="add-book-form">
-            <div class="field-control">
-              <label>Name</label>
-              <input id="book-name" type="text" placeholder="Book name..." required/>
-            </div>
-            <div class="field-control">
-              <label>Author</label>
-              <input id="book-author" type="text" placeholder="Author..." required/>
-            </div>
-            <div class="field-control">
-              <label>Topic</label>
-              <input id="book-topic" type="text" placeholder="Book topic..." />
-            </div>
-
-            <button type="submit">Create</button>
-          </form>
-        </div>
+            <form action="" id="add-book-form">
+              <div class="field-control">
+                <label>Name</label>
+                <input id="book-name" type="text" placeholder="Book name..." maxlength="100" required/>
+              </div>
+              <div class="field-control">
+                <label>Author</label>
+                <input id="book-author" type="text" placeholder="Author..." maxlength="100" required/>
+              </div>
+              <div class="field-control">
+                <label>Topic</label>
+                <div class="topic-select-trigger" onclick="toggleOpenTopicSelectOptions()">
+                  <span class="topic-select">Programming</span>
+                  <div class="topic-select-icon">
+                    <i class="fa fa-caret-up fa-xs"></i>
+                    <i class="fa fa-caret-down fa-xs"></i>
+                  </div>
+                </div>
+                <ul class="topic-select-options select-close">
+                    <li onclick="selectTopicOption('Programming')">Programming</li>
+                    <li onclick="selectTopicOption('Database')">Database</li>
+                    <li onclick="selectTopicOption('DevOps')">DevOps</li>
+                </ul>
+                <input id="book-topic" type="text" hidden />
+              </div>
+              <button type="submit">Create</button>
+            </form>
+          </div>
 
           <button class="close-modal" onclick="closeModal()">
             <i class="fa-solid fa-xmark fa-xl"></i>

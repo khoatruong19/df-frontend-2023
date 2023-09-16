@@ -5,8 +5,8 @@
 }
 
 :root {
-  --primary: #f1efef;
-  --secondary: #ccc8aa;
+  --primary: #dde6ed;
+  --secondary: #635985;
   --font-base: 1rem;
   --font-small: 0.9rem;
   --font-large: 1.2rem;
@@ -20,6 +20,10 @@ html {
 a {
   color: black;
   text-decoration: none;
+}
+
+ul {
+  list-style: none;
 }
 
 button {
@@ -42,6 +46,7 @@ body {
   width: 100vw;
   background: var(--primary);
   position: relative;
+  overflow-x: hidden;
 }
 
 header {
@@ -124,10 +129,12 @@ th {
 
 #books .book-name {
   width: 40%;
+  word-break: break-all;
 }
 
 #books .book-author {
   width: 25%;
+  word-break: break-all;
 }
 
 #books .book-topic {
@@ -147,7 +154,7 @@ th {
 }
 
 #books > table td.book-actions {
-  color: red;
+  color: #4e31aa;
   text-decoration: underline;
   font-weight: 600;
 }
@@ -166,12 +173,13 @@ th {
   justify-content: center;
 }
 
-.modal-close {
+.modal-close,
+.select-close {
   display: none !important;
 }
 
 .modal-content-wrapper {
-  min-width: 300px;
+  min-width: 400px;
   max-width: fit-content;
   background: #fff;
   color: black;
@@ -246,6 +254,7 @@ th {
   width: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 #modals .add-book form .field-control label {
@@ -255,7 +264,12 @@ th {
 
 #modals .add-book form .field-control input {
   width: 100%;
+  border: 2px solid gray;
   border-radius: 5px;
+}
+
+#modals .add-book form .field-control input:focus {
+  border-color: var(--secondary);
 }
 
 #modals .add-book form button {
@@ -267,4 +281,54 @@ th {
   border-radius: 5px;
   margin: 1rem 0;
   margin-left: auto;
+}
+
+#modals .add-book .topic-select-trigger {
+  padding: 0.5rem;
+  border: 2px solid gray;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#modals .add-book .topic-select-trigger:hover {
+  opacity: 0.8;
+}
+
+#modals .add-book .topic-select-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+#modals .add-book .topic-select-icon {
+  color: #635985;
+}
+
+#modals .add-book .topic-select-options {
+  position: absolute;
+  left: 0;
+  top: 3.6rem;
+  width: 100%;
+  z-index: 999;
+  background: white;
+  border: 1px solid gray;
+  box-shadow: 0 0 1px 2px lightgray;
+  border-radius: 5px;
+}
+
+.topic-selected {
+  background: var(--primary);
+}
+
+#modals .add-book .topic-select-options li {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+#modals .add-book .topic-select-options li:hover {
+  background: var(--primary);
 }
