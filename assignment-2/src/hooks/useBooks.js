@@ -29,7 +29,6 @@ const useBooks = () => {
 
   const searchedBooks = useMemo(() => {
     if (!!!searchBooksKey.length) return [...books];
-    console.log('memo');
 
     return [...books].filter(
       (book) =>
@@ -57,13 +56,7 @@ const useBooks = () => {
   useEffect(() => {
     if (page !== 0) setPage(0);
   }, [totalPages]);
-  console.log({
-    books,
-    searchedBooks,
-    filteredBooks,
-    totalPages,
-    storedBooks: JSON.parse(localStorage.getItem('books')),
-  });
+
   return {
     books,
     setBooks,
