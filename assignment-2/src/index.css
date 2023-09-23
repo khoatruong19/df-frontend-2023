@@ -5,9 +5,347 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  width: 100vw;
+  background: var(--primary);
+  position: relative;
+  overflow-x: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #dde6ed;
+  --secondary: #635985;
+  --font-base: 1rem;
+  --font-small: 0.9rem;
+  --font-large: 1.2rem;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+button:hover {
+  opacity: 0.75;
+}
+
+input {
+  outline: none;
+  padding: 0.5rem;
+}
+
+header {
+  height: 80px;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid lightgray;
+  background: white;
+}
+
+header > a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+
+header > a > img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  padding: 0.4rem;
+  border-radius: 100%;
+}
+
+main {
+  padding: 2rem;
+}
+
+#actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+#actions input {
+  min-width: 300px;
+  height: 50px;
+  padding: 0.7rem;
+  outline: none;
+  border-radius: 5px;
+  border-color: lightgray;
+  font-size: var(--font-base);
+}
+
+#actions button {
+  height: 50px;
+  padding: 0 1.5rem;
+  border-radius: 5px;
+  background: var(--secondary);
+  color: white;
+  font-weight: 600;
+  border: none;
+  font-size: var(--font-base);
+}
+
+#books {
+  margin-top: 2rem;
+}
+
+#books > table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#books {
+}
+
+#books > table td,
+th {
+  border: 3px solid var(--secondary);
+  text-align: left;
+  padding: 8px;
+  font-size: var(--font-base);
+}
+
+#books .book-name {
+  width: 40%;
+  word-break: break-all;
+}
+
+#books .book-author {
+  width: 25%;
+  word-break: break-all;
+}
+
+#books .book-topic {
+  width: 20%;
+}
+
+#books .book-actions {
+  width: 15%;
+}
+
+#books td.book-actions {
+  cursor: pointer;
+}
+
+#books td.book-actions:hover {
+  opacity: 0.7;
+}
+
+#books > table td.book-actions {
+  color: #4e31aa;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+#modals {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close,
+.select-close {
+  display: none !important;
+}
+
+.modal-content-wrapper {
+  min-width: 400px;
+  max-width: fit-content;
+  background: #fff;
+  color: black;
+  padding: 1.5rem 0 1rem 0;
+  border-radius: 5px;
+  position: relative;
+}
+
+.modal-content-wrapper .close-modal {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+#modals .delete-book-confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+#modals .delete-book-confirmation > .confirmation-content {
+  width: 80%;
+  text-align: center;
+}
+
+#delete-book-name {
+  font-weight: 600;
+}
+
+#modals .delete-book-confirmation > .confirmation-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#modals .delete-book-confirmation > .confirmation-actions button {
+  padding: 0.8rem 1rem;
+  width: 100px;
+  border: none;
+}
+
+#modals .delete-book-confirmation .delete {
+  background: transparent;
+}
+
+#modals .delete-book-confirmation .cancel {
+  color: white;
+  background: var(--secondary);
+  font-weight: 600;
+  border-radius: 5px;
+}
+
+#modals .add-book {
+  padding: 0rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#modals .add-book h2 {
+  margin-bottom: 1.5rem;
+}
+
+#modals .add-book form {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1rem;
+}
+
+#modals .add-book form .field-control {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+#modals .add-book form .field-control label {
+  font-size: var(--font-small);
+  font-weight: 600;
+}
+
+#modals .add-book form .field-control input {
+  width: 100%;
+  border: 2px solid gray;
+  border-radius: 5px;
+}
+
+#modals .add-book form .field-control input:focus {
+  border-color: var(--secondary);
+}
+
+#modals .add-book form button {
+  padding: 0.8rem 1rem;
+  width: 100px;
+  color: white;
+  background: var(--secondary);
+  font-weight: 600;
+  border-radius: 5px;
+  margin: 1rem 0;
+  margin-left: auto;
+}
+
+#modals .add-book .topic-select-trigger {
+  padding: 0.5rem;
+  border: 2px solid gray;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#modals .add-book .topic-select-trigger:hover {
+  opacity: 0.8;
+}
+
+#modals .add-book .topic-select-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+#modals .add-book .topic-select-icon {
+  color: #635985;
+}
+
+#modals .add-book .topic-select-options {
+  position: absolute;
+  left: 0;
+  top: 3.6rem;
+  width: 100%;
+  z-index: 999;
+  background: white;
+  border: 1px solid gray;
+  box-shadow: 0 0 1px 2px lightgray;
+  border-radius: 5px;
+}
+
+.topic-selected {
+  background: var(--primary);
+  cursor: not-allowed !important;
+}
+
+#modals .add-book .topic-select-options li {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+#modals .add-book .topic-select-options li:hover {
+  background: var(--primary);
+}
+
+.no-books-message {
+  margin-top: 2rem;
+  text-align: center;
 }

@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useMemo, useState } from 'react';
+import BooksActions from './components/BooksActions';
+import BooksTable from './components/BooksTable';
+import Header from './components/Header';
+import ModalProvider from './providers/ModalProvider';
+import useBooks from './hooks/useBooks';
 
 function App() {
+  const {
+    books,
+    setBooks,
+    searchBooksKey,
+    setSearchBooksKey,
+    searchedBooks,
+    handleDeleteBook,
+  } = useBooks();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <ModalProvider>
+        <main>
+          <BooksActions
+            searchBooksKey={searchBooksKey}
+            setSearchBooksKey={setSearchBooksKey}
+            books={books}
+            setBooks={setBooks}
+          />
+          <BooksTable deleteBook={handleDeleteBook} books={searchedBooks} />
+        </main>
+      </ModalProvider>
+    </>
   );
 }
 
