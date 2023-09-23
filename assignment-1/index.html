@@ -9,15 +9,37 @@
   </head>
 
   <body>
-   
+    <header>
+      <h1>Bookstore</h1>
+      <a href="https://github.com/khoatruong19" target="_blank">
+          <img alt="avatar-img" src="https://avatars.githubusercontent.com/u/85026053?v=4"/>
+          <span>Khoa Truong</span>
+      </a>
+  </header>
 
-    <main>
-      <section id="actions">
-          <input id="search" type="text" placeholder="Search books by name or author"/>
-          <button onclick='openModal("add-book")'>Add book</button> 
-      </section>
 
-      
+  <main>
+    <section id="actions">
+        <input id="search" type="text" placeholder="Search books by name or author"/>
+        <button onclick='openModal("add-book")'>Add book</button> 
+    </section>
+
+    <section id="books">
+      <table>
+        <thead>
+          <tr>
+            <th class="book-id">#</th>
+            <th class="book-name">Name</th>
+            <th class="book-author">Author</th>
+            <th class="book-topic">Topic</th>
+            <th class="book-actions">Action</th>
+          </tr>
+        </thead>
+        <tbody id="books-table-body">
+          <div class="end-book-row"></div>
+        </tbody>
+      </table>
+    </section>
     </main>
 
     <aside id="modals" class="modal-close">
