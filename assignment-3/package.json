@@ -16,7 +16,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +46,11 @@
     "@types/node": "^16.18.52",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "prettier": "^3.0.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": ["prettier --write","eslint --cache --fix"]
   }
 }
