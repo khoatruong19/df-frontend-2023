@@ -15,15 +15,17 @@ const BooksActions = (props: BooksActionsProps) => {
 
   const { showModal } = useModalContext()
 
+  const handleOpenAddBookModal = () => {
+    showModal(MODALS.ADD_BOOK, { books, setBooks })
+  }
+
   return (
     <section id="actions">
       <SearchBookInput
         searchBooksKey={searchBooksKey}
         setSearchBooksKey={setSearchBooksKey}
       />
-      <button onClick={() => showModal(MODALS.ADD_BOOK, { books, setBooks })}>
-        Add book
-      </button>
+      <button onClick={handleOpenAddBookModal}>Add book</button>
     </section>
   )
 }

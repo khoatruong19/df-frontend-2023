@@ -23,7 +23,13 @@ const useBooks = () => {
   const [searchBooksKey, setSearchBooksKey] = useState('')
   const [books, setBooks] = useState<Book[]>(() => {
     const storedBooks = localStorage.getItem('books')
-    if (storedBooks) return JSON.parse(storedBooks)
+    if (storedBooks) {
+      try {
+        return JSON.parse(storedBooks) as Book[]
+      } catch (error) {
+        return DEFAULT_BOOKS
+      }
+    }
     return DEFAULT_BOOKS
   })
   const [page, setPage] = useState(0)

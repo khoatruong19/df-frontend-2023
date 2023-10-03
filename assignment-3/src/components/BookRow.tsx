@@ -12,21 +12,20 @@ const BookRow = (props: BookRowProps) => {
 
   const { showModal } = useModalContext()
 
+  const handleOpenDeleteConfirmationModal = () => {
+    showModal(MODALS.DELETE_BOOK_CONFIRMATION, {
+      deleteBook,
+      bookName: name,
+    })
+  }
+
   return (
     <tr>
       <td>{order}</td>
       <td className="book-name">{name}</td>
       <td className="book-author">{author}</td>
       <td>{topic}</td>
-      <td
-        className="book-actions"
-        onClick={() =>
-          showModal(MODALS.DELETE_BOOK_CONFIRMATION, {
-            deleteBook,
-            bookName: name,
-          })
-        }
-      >
+      <td className="book-actions" onClick={handleOpenDeleteConfirmationModal}>
         Delete
       </td>
     </tr>
