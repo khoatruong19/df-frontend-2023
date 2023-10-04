@@ -1,30 +1,24 @@
 import React from 'react'
 import { ArrowLeftCircle, ArrowRightCircle } from 'lucide-react'
+import { useBooksContext } from '../providers/BooksProvider'
 
-type BooksPaginationProps = {
-  totalPages: number
-  page: number
-  setPage: React.Dispatch<React.SetStateAction<number>>
-}
+const BooksPagination = () => {
+  const { totalPages, page, setPage } = useBooksContext()
 
-const BooksPagination = ({
-  totalPages,
-  page,
-  setPage,
-}: BooksPaginationProps) => {
   return (
     <section
       id="books-pagination"
       className="flex items-center justify-center gap-2 max-w-[300px] mx-auto mt-4"
     >
-      {page > 0 && (
-        <button
-          className="bg-transparent hover:text-secondary"
-          onClick={() => setPage((prev) => prev - 1)}
-        >
-          <ArrowLeftCircle size={30} />
-        </button>
-      )}
+      <button
+        className={`${
+          page > 0 ? 'opacity-100' : 'opacity-0 cursor-default'
+        } bg-transparent hover:text-secondary`}
+        onClick={() => setPage((prev) => prev - 1)}
+        disabled={!(page > 0)}
+      >
+        <ArrowLeftCircle size={30} />
+      </button>
       {Array.from({ length: totalPages }, (_, i) => i + 1).map((item, idx) => (
         <button
           onClick={() => setPage(idx)}
@@ -34,14 +28,15 @@ const BooksPagination = ({
           {item}
         </button>
       ))}
-      {page < totalPages - 1 && (
-        <button
-          className="bg-transparent hover:text-secondary"
-          onClick={() => setPage((prev) => prev + 1)}
-        >
-          <ArrowRightCircle size={30} />
-        </button>
-      )}
+      <button
+        className={`${
+          page < totalPages - 1 ? 'opacity-100' : 'opacity-0 cursor-default'
+        } bg-transparent hover:text-secondary`}
+        onClick={() => setPage((prev) => prev + 1)}
+        disabled={!(page < totalPages - 1)}
+      >
+        <ArrowRightCircle size={30} />
+      </button>
     </section>
   )
 }

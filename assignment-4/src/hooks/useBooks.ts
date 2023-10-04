@@ -1,38 +1,20 @@
-import { useEffect, useMemo, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
 import { saveBooksToLocalStorage } from '../utils/helpers'
-import { Book } from '../utils/types'
+import { Book, NewBook } from '../utils/types'
+import { BOOKS_PER_PAGE } from '../utils/constants'
 
-const DEFAULT_BOOKS: Book[] = [
-  {
-    id: 'sdfjsdfklj',
-    name: 'Book 1',
-    author: 'Khoa Truong',
-    topic: 'Programming',
-  },
-  {
-    id: 'qwerqwerqwer',
-    name: 'Book 2',
-    author: 'Khoa Truong',
-    topic: 'DevOps',
-  },
-]
+type UseBooksProps = {
+  searchBooksKey: string
+  setSearchBooksKey: Dispatch<SetStateAction<string>>
+  books: Book[]
+  setBooks: Dispatch<SetStateAction<Book[]>>
+  page: number
+  setPage: Dispatch<SetStateAction<number>>
+}
 
-export const BOOKS_PER_PAGE = 5
-
-const useBooks = () => {
-  const [searchBooksKey, setSearchBooksKey] = useState('')
-  const [books, setBooks] = useState<Book[]>(() => {
-    const storedBooks = localStorage.getItem('books')
-    if (storedBooks) {
-      try {
-        return JSON.parse(storedBooks) as Book[]
-      } catch (error) {
-        return DEFAULT_BOOKS
-      }
-    }
-    return DEFAULT_BOOKS
-  })
-  const [page, setPage] = useState(0)
+const useBooks = (props: UseBooksProps) => {
+  const { books, page, searchBooksKey, setBooks, setPage } = props
+  console.log({ searchBooksKey })
 
   const searchedBooks = useMemo(() => {
     if (searchBooksKey.length === 0) return [...books]
@@ -60,21 +42,56 @@ const useBooks = () => {
     saveBooksToLocalStorage(tempBooks)
   }
 
+  const handleAddBook = (data: NewBook) => {
+    const existingBook = books.find(
+      ({ id, ...rest }) => JSON.stringify(data) === JSON.stringify(rest),
+    )
+    if (existingBook) return alert('This book is existing')
+    const newBook = {
+      id: data.author + data.name + new Date().getTime().toLocaleString(),
+      ...data,
+    }
+    const tempBooks = [...books, newBook]
+
+    setBooks(tempBooks)
+    saveBooksToLocalStorage(tempBooks)
+  }
+
+  const handleUpdateBook = (data: Book) => {
+    const updateBook = books.find(({ id }) => data.id === id)
+
+    if (!updateBook) return alert('Not found!')
+
+    if (JSON.stringify(data) === JSON.stringify(updateBook)) return
+
+    const existingBook = books.find(
+      ({ id, ...rest }) => JSON.stringify(data) === JSON.stringify(rest),
+    )
+    if (existingBook)
+      return alert('These information is same as one other book!')
+
+    const tempBooks = [...books].map((book) => {
+      if (book.id !== updateBook.id) return book
+      return data
+    })
+
+    setBooks(tempBooks)
+    saveBooksToLocalStorage(tempBooks)
+  }
+
   useEffect(() => {
     if (page !== 0) setPage(0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalPages])
 
   return {
-    books,
-    setBooks,
-    searchBooksKey,
-    setSearchBooksKey,
     filteredBooks,
     handleDeleteBook,
     totalPages,
     page,
     setPage,
+    handleAddBook,
+    handleUpdateBook,
   }
 }
 

@@ -4,11 +4,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
-import React, { useEffect, useRef, useState } from 'react'
 import { ChevronsLeftRight } from 'lucide-react'
-import { saveBooksToLocalStorage } from '../../utils/helpers'
+import React, { useEffect, useRef, useState } from 'react'
 import { useModalContext } from '../../providers/ModalProvider'
-import { BookTopic, NewBook } from '../../utils/types'
+import { Book, BookTopic, NewBook } from '../../utils/types'
+import { useBooksContext } from '../../providers/BooksProvider'
 
 export const TOPICS: BookTopic[] = ['Programming', 'Database', 'DevOps']
 const DEFAULT_FORM_VALUES: NewBook = {
@@ -17,10 +17,16 @@ const DEFAULT_FORM_VALUES: NewBook = {
   topic: TOPICS[0],
 }
 
-const AddBook = ({ books, setBooks }) => {
+type BookFormProps = {
+  updateBookData?: Book | null
+}
+
+const BookForm = ({ updateBookData = null }: BookFormProps) => {
   const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES)
   const [openTopicOptions, setOpenTopicOptions] = useState(false)
   const { closeModal } = useModalContext()
+  const { handleAddBook, handleUpdateBook } = useBooksContext()
+
   const nameInputRef = useRef<HTMLInputElement | null>(null)
 
   const handleToggleOpenTopicOptions = () =>
@@ -34,25 +40,12 @@ const AddBook = ({ books, setBooks }) => {
   const handleOnChangeFormField = (field: keyof NewBook, value: string) =>
     setFormValues((prev) => ({ ...prev, [field]: value }))
 
-  const handleAddBookSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (!updateBookData) {
+      handleAddBook(formValues)
+    } else handleUpdateBook({ id: updateBookData.id, ...formValues })
 
-    const existingBook = books.find(
-      ({ id, ...rest }) => JSON.stringify(formValues) === JSON.stringify(rest),
-    )
-    if (existingBook) return alert('This book is existing')
-
-    const newBook = {
-      id:
-        formValues.author +
-        formValues.name +
-        new Date().getTime().toLocaleString(),
-      ...formValues,
-    }
-    const tempBooks = [...books, newBook]
-
-    setBooks(tempBooks)
-    saveBooksToLocalStorage(tempBooks)
     closeModal()
     setFormValues(DEFAULT_FORM_VALUES)
   }
@@ -62,10 +55,18 @@ const AddBook = ({ books, setBooks }) => {
     nameInputRef.current.focus()
   }, [nameInputRef])
 
+  useEffect(() => {
+    if (!updateBookData) return
+
+    const { id, ...rest } = updateBookData
+
+    setFormValues(rest)
+  }, [updateBookData])
+
   return (
     <div className="text-black">
       <h2 className="text-2xl font-semibold mb-3">Add book</h2>
-      <form onSubmit={handleAddBookSubmit} id="add-book-form">
+      <form onSubmit={handleSubmit} id="add-book-form">
         <div className="field-control">
           <label>Name</label>
           <input
@@ -129,4 +130,4 @@ const AddBook = ({ books, setBooks }) => {
   )
 }
 
-export default AddBook
+export default BookForm

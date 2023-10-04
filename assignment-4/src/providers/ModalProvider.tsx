@@ -11,12 +11,12 @@ import {
   ReactNode,
   useMemo,
 } from 'react'
-import AddBook from '../components/modals/AddBook'
 import DeleteBookConfirmation from '../components/modals/DeleteBookConfirmation'
 import ModalLayout from '../layouts/ModalLayout'
+import BookForm from '../components/modals/BookForm'
 
 export enum MODALS {
-  ADD_BOOK = 'add-book',
+  BOOK_FORM = 'book-form',
   DELETE_BOOK_CONFIRMATION = 'delet-book-confirmation',
 }
 
@@ -27,7 +27,7 @@ type ModalContextValues = {
 }
 
 const MODAL_ELEMENTS: Record<MODALS, ReactElement> = {
-  [MODALS.ADD_BOOK]: <AddBook books={[]} setBooks={() => {}} />,
+  [MODALS.BOOK_FORM]: <BookForm />,
   [MODALS.DELETE_BOOK_CONFIRMATION]: (
     <DeleteBookConfirmation bookName="" deleteBook={() => {}} />
   ),

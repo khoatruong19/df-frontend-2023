@@ -1,22 +1,15 @@
 import React from 'react'
-import { Book } from '../utils/types'
 import { MODALS, useModalContext } from '../providers/ModalProvider'
 import SearchBookInput from './SearchBooksInput'
+import { useBooksContext } from '../providers/BooksProvider'
 
-type BooksActionsProps = {
-  searchBooksKey: string
-  setSearchBooksKey: React.Dispatch<React.SetStateAction<string>>
-  books: Book[]
-  setBooks: React.Dispatch<React.SetStateAction<Book[]>>
-}
-
-const BooksActions = (props: BooksActionsProps) => {
-  const { searchBooksKey, setSearchBooksKey, books, setBooks } = props
+const BooksActions = () => {
+  const { searchBooksKey, setSearchBooksKey } = useBooksContext()
 
   const { showModal } = useModalContext()
 
   const handleOpenAddBookModal = () => {
-    showModal(MODALS.ADD_BOOK, { books, setBooks })
+    showModal(MODALS.BOOK_FORM, {})
   }
 
   return (

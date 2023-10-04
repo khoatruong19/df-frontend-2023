@@ -1,21 +1,13 @@
 import React from 'react'
-import { BOOKS_PER_PAGE } from '../hooks/useBooks'
 import BookRow from './BookRow'
-import { Book } from '../utils/types'
+import { useBooksContext } from '../providers/BooksProvider'
+import { BOOKS_PER_PAGE } from '../utils/constants'
 
-type BooksTableProps = {
-  books: Book[]
-  page: number
-  deleteBook: (bookId: string) => void
-}
+const BooksTable = () => {
+  const { filteredBooks, page, handleDeleteBook } = useBooksContext()
 
-const BooksTable = ({
-  books = [],
-  page,
-  deleteBook: deleteBookById,
-}: BooksTableProps) => {
   return (
-    <section id="books-table" className="mt-20 min-h-[200px] overflow-x-auto">
+    <section id="books-table" className="mt-20 min-h-[370px] overflow-x-auto">
       <table className="w-full border-2">
         <thead>
           <tr className="text-left">
@@ -27,10 +19,10 @@ const BooksTable = ({
           </tr>
         </thead>
         <tbody id="books-table-body">
-          {books.length > 0 &&
-            books.map((book, index) => (
+          {filteredBooks.length > 0 &&
+            filteredBooks.map((book, index) => (
               <BookRow
-                deleteBook={() => deleteBookById(book.id)}
+                deleteBook={() => handleDeleteBook(book.id)}
                 key={book.id}
                 {...book}
                 order={index + page * BOOKS_PER_PAGE + 1}
@@ -38,7 +30,7 @@ const BooksTable = ({
             ))}
         </tbody>
       </table>
-      {books.length === 0 && (
+      {filteredBooks.length === 0 && (
         <h1 className="no-books-message">No books found!</h1>
       )}
     </section>
