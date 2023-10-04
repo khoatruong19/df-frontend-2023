@@ -19,7 +19,7 @@ const ModalLayout = (props: ModalLayoutProps) => {
       id="modals"
       className={`items-center justify-center ${!isOpen ? 'hidden' : 'flex'} `}
     >
-      <div ref={wrapperRef} className="relative w-[95%] md:w-[400px] bg-white ">
+      <div ref={wrapperRef} className="bg-white rounded-md">
         {children}
       </div>
     </div>

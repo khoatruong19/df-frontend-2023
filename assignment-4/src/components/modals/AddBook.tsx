@@ -3,7 +3,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+
 import React, { useEffect, useRef, useState } from 'react'
+import { ChevronsLeftRight } from 'lucide-react'
 import { saveBooksToLocalStorage } from '../../utils/helpers'
 import { useModalContext } from '../../providers/ModalProvider'
 import { BookTopic, NewBook } from '../../utils/types'
@@ -61,8 +63,8 @@ const AddBook = ({ books, setBooks }) => {
   }, [nameInputRef])
 
   return (
-    <div className="add-book">
-      <h2>Add book</h2>
+    <div className="text-black">
+      <h2 className="text-2xl font-semibold mb-3">Add book</h2>
       <form onSubmit={handleAddBookSubmit} id="add-book-form">
         <div className="field-control">
           <label>Name</label>
@@ -90,20 +92,23 @@ const AddBook = ({ books, setBooks }) => {
         <div className="field-control">
           <label>Topic</label>
           <div
-            className="topic-select-trigger"
+            className="hover-opacity-desc p-2 border-2 rounded-md flex items-center justify-between"
             onClick={handleToggleOpenTopicOptions}
           >
-            <span className="topic-select">{formValues.topic}</span>
-            <div className="topic-select-icon">
-              <i className="fa fa-caret-up fa-xs" />
-              <i className="fa fa-caret-down fa-xs" />
+            <span className="">{formValues.topic}</span>
+            <div className="rotate-90">
+              <ChevronsLeftRight size={15} strokeWidth={3} />
             </div>
           </div>
           {openTopicOptions && (
-            <ul className="topic-select-options">
+            <ul className="absolute top-16 border-2 shadow-lg rounded-md w-full z-20 bg-white">
               {TOPICS.map((topic) => (
                 <li
-                  className={formValues.topic === topic ? 'topic-selected' : ''}
+                  className={`px-2 py-2.5 ${
+                    formValues.topic === topic
+                      ? 'bg-secondary/30'
+                      : 'hover-opacity-desc hover:bg-secondary/30'
+                  }`}
                   key={topic}
                   onClick={() => handleSelectTopic(topic)}
                 >
@@ -113,7 +118,12 @@ const AddBook = ({ books, setBooks }) => {
             </ul>
           )}
         </div>
-        <button type="submit">Create</button>
+        <button
+          className="mt-5 float-right hover-opacity-desc px-4 py-2 rounded-md text-white font-semibold bg-secondary"
+          type="submit"
+        >
+          Create
+        </button>
       </form>
     </div>
   )
