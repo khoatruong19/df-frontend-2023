@@ -25,6 +25,7 @@
     --success: 106 156 137;
     --danger: 254 0 0;
     --main-text: 0 0 0;
+    --pagination-button-text: 0 0 0;
   }
 
   :root[data-theme='dark'] {
@@ -33,6 +34,7 @@
     --success: 106 156 137;
     --danger: 212 173 252;
     --main-text: 255 255 255;
+    --pagination-button-text: 0 0 0;
   }
 }
 
@@ -94,7 +96,7 @@ body {
   }
 
   #books-pagination .page-button {
-    @apply py-1.5 px-3 rounded-md bg-white text-mainTextColor;
+    @apply py-1.5 px-3 rounded-md bg-white text-paginationBtnTextColor;
   }
 
   #books-pagination .page-button.selected {

@@ -1,6 +1,17 @@
-import { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
-import { saveBooksToLocalStorage } from '../utils/helpers'
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import {} from 'next/router'
+import {
+  debounce,
+  saveBooksToLocalStorage,
+  validatePageParam,
+} from '../utils/helpers'
 import { Book, GetBookResponse, NewBook } from '../utils/types'
 import { BOOKS_PER_PAGE } from '../utils/constants'
 
@@ -14,18 +25,22 @@ type UseBooksProps = {
 }
 
 const useBooks = (props: UseBooksProps) => {
-  const { books, page, searchBooksKey, setBooks, setPage } = props
+  const { books, page, searchBooksKey, setSearchBooksKey, setBooks, setPage } =
+    props
 
   const pathname = usePathname()
   const router = useRouter()
+  const params = useSearchParams()
+  const searchKeyParam = params.get('key')
+  const pageParam = params.get('page')
 
   const searchedBooks = useMemo(() => {
     if (searchBooksKey.length === 0) return [...books]
 
     return [...books].filter(
       (book) =>
-        book.name.toLowerCase().includes(searchBooksKey.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchBooksKey.toLowerCase()),
+        book.name.toLowerCase().includes(searchBooksKey.trim().toLowerCase()) ||
+        book.author.toLowerCase().includes(searchBooksKey.trim().toLowerCase()),
     )
   }, [books, searchBooksKey])
 
@@ -105,10 +120,36 @@ const useBooks = (props: UseBooksProps) => {
     }
   }
 
+  const syncFilterParamsWithUrl = () => {
+    const filterParams = new URLSearchParams({
+      key: searchBooksKey.trim(),
+      page: `${page + 1}`,
+    }).toString()
+    router.push(`?${filterParams}`)
+  }
+
+  const debounceSyncFilterParams = useCallback(
+    debounce(syncFilterParamsWithUrl, 500),
+    [searchBooksKey, page],
+  )
+
   useEffect(() => {
-    if (page !== 0) setPage(0)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const formatPageParam = validatePageParam(pageParam ?? '', totalPages)
+    if (totalPages === 0 || (page !== 0 && formatPageParam !== page)) setPage(0)
   }, [totalPages])
+
+  useEffect(() => {
+    debounceSyncFilterParams()
+  }, [searchBooksKey, page])
+
+  useEffect(() => {
+    if (searchKeyParam) setSearchBooksKey(searchKeyParam)
+
+    if (!pageParam) return
+
+    const formatPageParam = validatePageParam(pageParam, totalPages)
+    setPage(formatPageParam - 1)
+  }, [])
 
   return {
     filteredBooks,

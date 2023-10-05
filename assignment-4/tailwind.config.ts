@@ -19,6 +19,8 @@ const config: Config = {
         sucess: 'rgb(var(--success) / <alpha-value>)',
         danger: 'rgb(var(--danger) / <alpha-value>)',
         mainTextColor: 'rgb(var(--main-text) / <alpha-value>)',
+        paginationBtnTextColor:
+          'rgb(var(--pagination-button-text) / <alpha-value>)',
       },
     },
   },
