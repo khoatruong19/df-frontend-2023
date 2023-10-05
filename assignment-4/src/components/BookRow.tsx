@@ -1,7 +1,10 @@
 import React from 'react'
-import { Pencil, Trash } from 'lucide-react'
+import { BookOpen, Pencil, Trash } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Book } from '../utils/types'
 import { MODALS, useModalContext } from '../providers/ModalProvider'
+import { DeleteBookConfirmationProps } from './modals/DeleteBookConfirmation'
+import { BookFormProps } from './modals/BookForm'
 
 type BookRowProps = Book & {
   order: number
@@ -9,15 +12,31 @@ type BookRowProps = Book & {
 }
 
 const BookRow = (props: BookRowProps) => {
-  const { order, name, author, topic, deleteBook } = props
+  const { id, order, name, author, topic, deleteBook } = props
 
   const { showModal } = useModalContext()
+  const router = useRouter()
+
+  const handleOpenEditBookModal = () => {
+    showModal<BookFormProps>(MODALS.BOOK_FORM, {
+      updateBookData: {
+        id,
+        name,
+        author,
+        topic,
+      },
+    })
+  }
 
   const handleOpenDeleteConfirmationModal = () => {
-    showModal(MODALS.DELETE_BOOK_CONFIRMATION, {
+    showModal<DeleteBookConfirmationProps>(MODALS.DELETE_BOOK_CONFIRMATION, {
       deleteBook,
       bookName: name,
     })
+  }
+
+  const handleNavigateToBookDetailPage = () => {
+    router.push(`book/${id}`)
   }
 
   return (
@@ -27,10 +46,17 @@ const BookRow = (props: BookRowProps) => {
       <td className="book-author-col">{author}</td>
       <td>{topic}</td>
       <td className="font-bold">
-        <div className="flex justify-center md:justify-start items-center gap-2 md:gap-3 text-sucess">
+        <div className="flex justify-center md:justify-start items-center gap-2 md:gap-3">
           <button
-            className="hover-opacity-desc"
-            onClick={handleOpenDeleteConfirmationModal}
+            className="hover-opacity-desc text-[#6499E9]"
+            onClick={handleNavigateToBookDetailPage}
+          >
+            <span className="hidden md:inline">View</span>
+            <BookOpen size={15} strokeWidth={3} className="md:hidden" />
+          </button>
+          <button
+            className="hover-opacity-desc text-sucess"
+            onClick={handleOpenEditBookModal}
           >
             <span className="hidden md:inline">Edit</span>
             <Pencil size={15} strokeWidth={3} className="md:hidden" />

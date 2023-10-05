@@ -31,7 +31,9 @@ const BooksTable = () => {
         </tbody>
       </table>
       {filteredBooks.length === 0 && (
-        <h1 className="no-books-message">No books found!</h1>
+        <h1 className="text-center text-2xl mt-10 text-secondary">
+          No books found!
+        </h1>
       )}
     </section>
   )

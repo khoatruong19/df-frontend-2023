@@ -3,8 +3,8 @@ import React from 'react'
 
 const Header = () => {
   return (
-    <header className="h-16 bg-white flex items-center justify-center">
-      <nav className="w-full px-4 flex items-center justify-between text-black">
+    <header className="bg-white flex items-center justify-center border-b-2">
+      <nav className="w-full p-4 flex items-center justify-between text-black">
         <h1 className="text-2xl font-semibold">Bookstore</h1>
         <a
           href="https://github.com/khoatruong19"

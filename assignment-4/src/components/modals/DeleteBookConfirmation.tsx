@@ -2,7 +2,7 @@
 import React from 'react'
 import { useModalContext } from '../../providers/ModalProvider'
 
-type DeleteBookConfirmationProps = {
+export type DeleteBookConfirmationProps = {
   bookName: string
   deleteBook: () => void
 }

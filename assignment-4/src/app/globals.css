@@ -25,7 +25,10 @@ body {
     )
     rgb(var(--background-start-rgb));
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 #modals {

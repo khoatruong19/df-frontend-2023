@@ -17,7 +17,7 @@ const DEFAULT_FORM_VALUES: NewBook = {
   topic: TOPICS[0],
 }
 
-type BookFormProps = {
+export type BookFormProps = {
   updateBookData?: Book | null
 }
 
@@ -28,6 +28,8 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
   const { handleAddBook, handleUpdateBook } = useBooksContext()
 
   const nameInputRef = useRef<HTMLInputElement | null>(null)
+
+  const actionType = updateBookData ? 'EDIT' : 'ADD'
 
   const handleToggleOpenTopicOptions = () =>
     setOpenTopicOptions((prev) => !prev)
@@ -65,7 +67,9 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
 
   return (
     <div className="text-black">
-      <h2 className="text-2xl font-semibold mb-3">Add book</h2>
+      <h2 className="text-2xl font-semibold mb-3">
+        {actionType === 'ADD' ? 'Add book' : 'Edit book'}
+      </h2>
       <form onSubmit={handleSubmit} id="add-book-form">
         <div className="field-control">
           <label>Name</label>
@@ -123,7 +127,7 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
           className="mt-5 float-right hover-opacity-desc px-4 py-2 rounded-md text-white font-semibold bg-secondary"
           type="submit"
         >
-          Create
+          {actionType === 'ADD' ? 'Create' : 'Update'}
         </button>
       </form>
     </div>
