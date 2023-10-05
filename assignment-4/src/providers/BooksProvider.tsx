@@ -13,7 +13,7 @@ import {
 } from 'react'
 import useBooks from '../hooks/useBooks'
 import { DEFAULT_BOOKS } from '../utils/constants'
-import { Book } from '../utils/types'
+import { Book, GetBookResponse } from '../utils/types'
 
 type BooksContextValues = {
   books: Book[]
@@ -26,6 +26,7 @@ const defaultBooksContextValues: BooksContextValues = {
   searchBooksKey: '',
   setSearchBooksKey: () => {},
   filteredBooks: [],
+  handleGetBookById: () => ({}) as GetBookResponse,
   handleAddBook: () => {},
   handleDeleteBook: () => {},
   handleUpdateBook: () => {},

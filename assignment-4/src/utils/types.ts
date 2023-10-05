@@ -8,3 +8,9 @@ export type Book = {
 }
 
 export type NewBook = Omit<Book, 'id'>
+
+export type GetBookResponse = {
+  success: boolean
+  message: string
+  book?: Book
+}

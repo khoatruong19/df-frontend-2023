@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { saveBooksToLocalStorage } from '../utils/helpers'
-import { Book, NewBook } from '../utils/types'
+import { Book, GetBookResponse, NewBook } from '../utils/types'
 import { BOOKS_PER_PAGE } from '../utils/constants'
 
 type UseBooksProps = {
@@ -35,9 +35,7 @@ const useBooks = (props: UseBooksProps) => {
     BOOKS_PER_PAGE,
   )
 
-  const handleGetBookById = (
-    id: string,
-  ): { success: boolean; message: string; book?: Book } => {
+  const handleGetBookById = (id: string): GetBookResponse => {
     const exisitingBook = books.find((book) => book.id === id)
 
     if (!exisitingBook)
