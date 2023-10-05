@@ -19,7 +19,7 @@ const BooksActions = () => {
         setSearchBooksKey={setSearchBooksKey}
       />
       <button
-        className="w-fit shadow-md py-2.5 md:py-3 px-4 bg-secondary rounded-md font-medium"
+        className="hover-opacity-desc w-fit shadow-md py-2.5 md:py-3 px-4 bg-secondary rounded-md font-semibold"
         onClick={handleOpenAddBookModal}
       >
         <span className="text-xl md:hidden">+</span>

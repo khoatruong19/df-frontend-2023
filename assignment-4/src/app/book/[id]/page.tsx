@@ -26,7 +26,7 @@ const BookDetail = ({ params: { id } }: BookDetailProps) => {
   }
 
   const renderNotFoundView = () => (
-    <div className="px-3 flex flex-col items-center justify-center gap-4 h-full w-full mx-auto text-black">
+    <div className="px-3 flex flex-col items-center justify-center gap-4 h-full w-full mx-auto text-mainTextColor">
       <h1 className="text-5xl md:text-7xl">404</h1>
       <p>{data.message}</p>
       <Link
@@ -43,12 +43,12 @@ const BookDetail = ({ params: { id } }: BookDetailProps) => {
     <>
       <Link
         href="/"
-        className="flex items-center gap-2 text-sucess hover-opacity-desc absolute left-5 top-24"
+        className="flex items-center gap-2 text-danger hover-opacity-desc absolute left-5 top-24"
       >
         <ArrowLeft />
         <span>Back</span>
       </Link>
-      <div className="px-3 flex flex-col items-start gap-2 w-fit mx-auto text-black mt-10">
+      <div className="px-3 flex flex-col items-start gap-2 w-fit mx-auto text-mainTextColor mt-10">
         <div className="flex flex-col gap-2">
           {Object.entries(data?.book ?? []).map(([key, value]) => (
             <div key={key + value} className="flex items-center gap-2">

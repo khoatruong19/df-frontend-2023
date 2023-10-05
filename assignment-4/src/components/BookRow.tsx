@@ -40,7 +40,7 @@ const BookRow = (props: BookRowProps) => {
   }
 
   return (
-    <tr className="font-medium text-black">
+    <tr className="font-medium text-mainTextColor">
       <td>{order}</td>
       <td className="book-name-col">{name}</td>
       <td className="book-author-col">{author}</td>

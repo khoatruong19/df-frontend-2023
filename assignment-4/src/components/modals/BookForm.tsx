@@ -4,8 +4,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
+'use client'
+
 import { ChevronsLeftRight } from 'lucide-react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { createRef, useEffect, useState } from 'react'
 import { useModalContext } from '../../providers/ModalProvider'
 import { Book, BookTopic, NewBook } from '../../utils/types'
 import { useBooksContext } from '../../providers/BooksProvider'
@@ -27,7 +29,7 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
   const { closeModal } = useModalContext()
   const { handleAddBook, handleUpdateBook } = useBooksContext()
 
-  const nameInputRef = useRef<HTMLInputElement | null>(null)
+  const nameInputRef = createRef<HTMLInputElement>()
 
   const actionType = updateBookData ? 'EDIT' : 'ADD'
 
@@ -53,9 +55,14 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
   }
 
   useEffect(() => {
-    if (!nameInputRef || !nameInputRef.current) return
+    if (
+      !nameInputRef ||
+      !nameInputRef.current ||
+      (!updateBookData && formValues.name.length > 0)
+    )
+      return
     nameInputRef.current.focus()
-  }, [nameInputRef])
+  }, [nameInputRef, updateBookData, formValues])
 
   useEffect(() => {
     if (!updateBookData) return
@@ -63,6 +70,10 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
     const { id, ...rest } = updateBookData
 
     setFormValues(rest)
+  }, [updateBookData])
+
+  useEffect(() => {
+    if (!updateBookData) setFormValues(DEFAULT_FORM_VALUES)
   }, [updateBookData])
 
   return (
