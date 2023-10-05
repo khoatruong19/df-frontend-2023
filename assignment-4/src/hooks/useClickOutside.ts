@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 interface ValidRefTarget {
-  contains(target: EventTarget | null): any
+  contains(target: EventTarget | null): unknown
 }
 
 export const useClickOutside = (
