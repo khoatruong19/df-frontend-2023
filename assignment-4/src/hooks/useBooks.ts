@@ -7,6 +7,7 @@ import {
 } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import {} from 'next/router'
+import { uuid } from 'uuidv4'
 import {
   debounce,
   saveBooksToLocalStorage,
@@ -72,10 +73,7 @@ const useBooks = (props: UseBooksProps) => {
     )
     if (existingBook) return alert('This book is existing')
     const newBook = {
-      id:
-        data.author.trim() +
-        data.name.trim() +
-        new Date().toLocaleDateString().replaceAll('/', '-'),
+      id: uuid(),
       ...data,
     }
     const tempBooks = [...books, newBook]
