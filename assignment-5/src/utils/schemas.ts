@@ -24,7 +24,7 @@ export const BookSchema = z.object({
   author: z
     .string()
     .trim()
-    .regex(new RegExp('^[A-Za-zs]*$'), 'Contains only letters and spaces'),
+    .regex(/[^a-zA-Zs]+/, 'Contains only letters and spaces'),
 })
 
 export type BookSchemaType = z.infer<typeof BookSchema>
