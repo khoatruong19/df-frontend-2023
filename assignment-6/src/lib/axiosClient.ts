@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getToken } from '../utils/jwt'
 
 const BASE_URL = 'https://develop-api.bookstore.dwarvesf.com/api/v1'
 
@@ -8,7 +9,7 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   (config) => {
-    // config.headers['Authorization'] = `Bearer ${JWTManager.getToken()}`
+    config.headers['Authorization'] = `Bearer ${getToken()}`
     return config
   },
   (error) => {

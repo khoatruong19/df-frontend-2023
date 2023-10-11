@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import authService from '../services/auth'
 import { LoginInput } from '../utils/types'
 import { setToken } from '../utils/jwt'
@@ -10,6 +10,8 @@ type UseAuthProps = {
 }
 
 const useAuth = ({ setIsLogin, setEmail }: UseAuthProps) => {
+  const router = useRouter()
+
   const login = async (value: LoginInput) => {
     try {
       const {
@@ -28,10 +30,24 @@ const useAuth = ({ setIsLogin, setEmail }: UseAuthProps) => {
     setToken(null)
     setIsLogin(false)
     setEmail('')
-    redirect('/login')
+    router.push('/login')
   }
 
-  return { login, logout }
+  const me = async () => {
+    try {
+      const {
+        data: { data: responseData },
+      } = await authService.me()
+      setIsLogin(true)
+      setEmail(responseData.email)
+      setToken(responseData.accessToken)
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
+  return { login, logout, me }
 }
 
 export default useAuth

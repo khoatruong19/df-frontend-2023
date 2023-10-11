@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { usePathname, useRouter } from 'next/navigation'
 import {
   ReactNode,
@@ -19,6 +20,7 @@ const defaultAuthContextValues: AuthContextValues = {
   email: '',
   login: async () => {},
   logout: () => ({}) as never,
+  me: async () => false,
 }
 
 const AuthContext = createContext(defaultAuthContextValues)
@@ -37,13 +39,18 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   )
 
   useEffect(() => {
-    if (!isLogin) {
-      router.replace('login')
-      return
-    }
-
-    if (pathname === '/login') router.push('/')
+    if (isLogin && pathname === '/login') router.push('/')
   }, [isLogin, router, pathname])
+
+  useEffect(() => {
+    const checkStillLogin = async () => {
+      const stillLogin = await authUtils.me()
+      if (!stillLogin) {
+        router.replace('/login')
+      }
+    }
+    checkStillLogin()
+  }, [])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

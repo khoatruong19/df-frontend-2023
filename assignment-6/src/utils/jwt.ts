@@ -1,15 +1,19 @@
 let accessToken: string | null = null
 
 const setToken = (token: string | null) => {
+  if (!token) return
   accessToken = token
 
-  if (!token) {
-    localStorage.removeItem('token')
-  } else {
-    localStorage.setItem('token', token)
-  }
+  localStorage.setItem('token', token)
 }
 
-const getToken = () => accessToken
+const getToken = () => {
+  if (!accessToken) {
+    const storagedToken = localStorage.getItem('token')
+    accessToken = storagedToken
+  }
+
+  return accessToken
+}
 
 export { setToken, getToken }

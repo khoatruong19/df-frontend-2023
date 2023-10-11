@@ -1,7 +1,11 @@
-export type BookTopic = 'Programming' | 'Database' | 'DevOps'
+export type BookTopic = {
+  code: string
+  id: number
+  name: string
+}
 
 export type Book = {
-  id: string
+  id: number
   name: string
   author: string
   topic: BookTopic
@@ -23,4 +27,10 @@ export type LoginInput = {
 export type LoginResponse = {
   email: string
   accessToken: string
+}
+
+export type CreateBookInput = {
+  author: string
+  name: string
+  topicId: 0
 }
