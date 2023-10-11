@@ -32,5 +32,7 @@ export type LoginResponse = {
 export type CreateBookInput = {
   author: string
   name: string
-  topicId: 0
+  topicId: number
 }
+
+export type UpdateBookInput = CreateBookInput & { id: number }

@@ -8,21 +8,33 @@
 
 import { ChevronsLeftRight } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import useSWR from 'swr'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useModalContext } from '../../providers/ModalProvider'
 import { Book, BookTopic } from '../../utils/types'
 import { useBooksContext } from '../../providers/BooksProvider'
 import { BookSchema, BookSchemaType } from '../../utils/schemas'
+import booksService from '../../services/books'
 
-export const TOPICS: BookTopic[] = ['Programming', 'Database', 'DevOps']
+const DEFAULT_TOPIC: BookTopic = {
+  id: 1,
+  name: 'Programing',
+  code: 'programming',
+}
 
 export type BookFormProps = {
   updateBookData?: Book | null
 }
 
 const BookForm = ({ updateBookData = null }: BookFormProps) => {
-  const [selectTopic, setSelectTopic] = useState(TOPICS[0])
+  const { data: topics } = useSWR('getAllTopics', async () => {
+    const { data } = await booksService.getTopics()
+    return data.data
+  })
+  const [selectTopic, setSelectTopic] = useState(
+    topics ? topics[0] : DEFAULT_TOPIC,
+  )
   const [openTopicOptions, setOpenTopicOptions] = useState(false)
   const { closeModal } = useModalContext()
   const { handleAddBook, handleUpdateBook } = useBooksContext()
@@ -48,13 +60,17 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
 
   const onSubmit = (data) => {
     if (!updateBookData) {
-      handleAddBook({ ...data, topic: selectTopic })
+      handleAddBook({ ...data, topicId: selectTopic.id })
     } else
-      handleUpdateBook({ id: updateBookData.id, ...data, topic: selectTopic })
+      handleUpdateBook({
+        id: updateBookData.id,
+        ...data,
+        topicId: selectTopic.id,
+      })
 
     closeModal()
     reset()
-    setSelectTopic(TOPICS[0])
+    setSelectTopic(DEFAULT_TOPIC)
   }
 
   useEffect(() => {
@@ -70,7 +86,7 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
   useEffect(() => {
     if (!updateBookData) {
       reset()
-      setSelectTopic(TOPICS[0])
+      setSelectTopic(DEFAULT_TOPIC)
     }
   }, [updateBookData])
 
@@ -104,26 +120,27 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
             className="hover-opacity-desc p-2 border-2 rounded-md flex items-center justify-between"
             onClick={handleToggleOpenTopicOptions}
           >
-            <span className="">{selectTopic}</span>
+            <span className="">{selectTopic.name}</span>
             <div className="rotate-90">
               <ChevronsLeftRight size={15} strokeWidth={3} />
             </div>
           </div>
           {openTopicOptions && (
             <ul className="absolute top-16 border-2 shadow-lg rounded-md w-full z-20 bg-white">
-              {TOPICS.map((topic) => (
-                <li
-                  className={`px-2 py-2.5 ${
-                    selectTopic === topic
-                      ? 'bg-secondary/30'
-                      : 'hover-opacity-desc hover:bg-secondary/30'
-                  }`}
-                  key={topic}
-                  onClick={() => handleSelectTopic(topic)}
-                >
-                  {topic}
-                </li>
-              ))}
+              {topics &&
+                topics.map((topic) => (
+                  <li
+                    className={`px-2 py-2.5 ${
+                      selectTopic === topic
+                        ? 'bg-secondary/30'
+                        : 'hover-opacity-desc hover:bg-secondary/30'
+                    }`}
+                    key={topic.code}
+                    onClick={() => handleSelectTopic(topic)}
+                  >
+                    {topic.name}
+                  </li>
+                ))}
             </ul>
           )}
         </div>

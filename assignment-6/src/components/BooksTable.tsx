@@ -4,8 +4,7 @@ import { useBooksContext } from '../providers/BooksProvider'
 import { BOOKS_PER_PAGE } from '../utils/constants'
 
 const BooksTable = () => {
-  const { filteredBooks, page, handleDeleteBook } = useBooksContext()
-
+  const { books, isLoading, page, handleDeleteBook } = useBooksContext()
   return (
     <section id="books-table" className="mt-20 min-h-[370px] overflow-x-auto">
       <table className="w-full border-2">
@@ -19,18 +18,19 @@ const BooksTable = () => {
           </tr>
         </thead>
         <tbody id="books-table-body">
-          {filteredBooks.length > 0 &&
-            filteredBooks.map((book, index) => (
+          {isLoading && <p>Loading...</p>}
+          {books &&
+            books.map((book, index) => (
               <BookRow
                 deleteBook={() => handleDeleteBook(book.id)}
                 key={book.id}
-                {...book}
+                book={book}
                 order={index + page * BOOKS_PER_PAGE + 1}
               />
             ))}
         </tbody>
       </table>
-      {filteredBooks.length === 0 && (
+      {books && books.length === 0 && (
         <h1 className="text-center text-2xl mt-10 text-secondary">
           No books found!
         </h1>

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { useRouter } from 'next/navigation'
 import authService from '../services/auth'
 import { LoginInput } from '../utils/types'
-import { setToken } from '../utils/jwt'
+import { deleteToken, setToken } from '../utils/jwt'
 
 type UseAuthProps = {
   setIsLogin: Dispatch<SetStateAction<boolean>>
@@ -27,7 +27,7 @@ const useAuth = ({ setIsLogin, setEmail }: UseAuthProps) => {
   }
 
   const logout = () => {
-    setToken(null)
+    deleteToken()
     setIsLogin(false)
     setEmail('')
     router.push('/login')

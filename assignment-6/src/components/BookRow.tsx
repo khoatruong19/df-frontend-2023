@@ -6,45 +6,40 @@ import { MODALS, useModalContext } from '../providers/ModalProvider'
 import { DeleteBookConfirmationProps } from './modals/DeleteBookConfirmation'
 import { BookFormProps } from './modals/BookForm'
 
-type BookRowProps = Book & {
+type BookRowProps = {
+  book: Book
   order: number
   deleteBook: () => void
 }
 
 const BookRow = (props: BookRowProps) => {
-  const { id, order, name, author, topic, deleteBook } = props
-
+  const { order, book, deleteBook } = props
   const { showModal } = useModalContext()
   const router = useRouter()
 
   const handleOpenEditBookModal = () => {
     showModal<BookFormProps>(MODALS.BOOK_FORM, {
-      updateBookData: {
-        id,
-        name,
-        author,
-        topic,
-      },
+      updateBookData: book,
     })
   }
 
   const handleOpenDeleteConfirmationModal = () => {
     showModal<DeleteBookConfirmationProps>(MODALS.DELETE_BOOK_CONFIRMATION, {
       deleteBook,
-      bookName: name,
+      bookName: book.name,
     })
   }
 
   const handleNavigateToBookDetailPage = () => {
-    router.push(`book/${id}`)
+    router.push(`book/${book.id}`)
   }
 
   return (
     <tr className="font-medium text-mainTextColor">
       <td>{order}</td>
-      <td className="book-name-col">{name}</td>
-      <td className="book-author-col">{author}</td>
-      <td>{topic}</td>
+      <td className="book-name-col">{book.name}</td>
+      <td className="book-author-col">{book.author}</td>
+      <td>{book.topic.name}</td>
       <td className="font-bold">
         <div className="flex justify-center md:justify-start items-center gap-2 md:gap-3">
           <button

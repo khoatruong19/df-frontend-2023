@@ -16,4 +16,9 @@ const getToken = () => {
   return accessToken
 }
 
-export { setToken, getToken }
+const deleteToken = () => {
+  accessToken = null
+  localStorage.removeItem('token')
+}
+
+export { setToken, getToken, deleteToken }

@@ -7,156 +7,141 @@ import {
 } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import {} from 'next/router'
+import { KeyedMutator } from 'swr'
 import { uuid } from 'uuidv4'
 import {
   debounce,
   saveBooksToLocalStorage,
   validatePageParam,
 } from '../utils/helpers'
-import { Book, GetBookResponse, NewBook } from '../utils/types'
+import {
+  Book,
+  CreateBookInput,
+  GetBookResponse,
+  NewBook,
+  UpdateBookInput,
+} from '../utils/types'
 import { BOOKS_PER_PAGE } from '../utils/constants'
 import { useAuthContext } from '../providers/AuthProvider'
+import booksService from '../services/books'
 
 type UseBooksProps = {
-  searchBooksKey: string
-  setSearchBooksKey: Dispatch<SetStateAction<string>>
-  books: Book[]
-  setBooks: Dispatch<SetStateAction<Book[]>>
-  page: number
-  setPage: Dispatch<SetStateAction<number>>
+  // searchBooksKey: string
+  // setSearchBooksKey: Dispatch<SetStateAction<string>>
+  // books: Book[]
+  // setBooks: Dispatch<SetStateAction<Book[]>>
+  // page: number
+  // setPage: Dispatch<SetStateAction<number>>
+  mutate: KeyedMutator<Book[]>
 }
 
 const useBooks = (props: UseBooksProps) => {
-  const { books, page, searchBooksKey, setSearchBooksKey, setBooks, setPage } =
-    props
-  const { isLogin } = useAuthContext()
-  const pathname = usePathname()
-  const router = useRouter()
-  const params = useSearchParams()
-  const searchKeyParam = params.get('key')
-  const pageParam = params.get('page')
+  const { mutate } = props
 
-  const searchedBooks = useMemo(() => {
-    if (searchBooksKey.length === 0) return [...books]
+  // const { isLogin } = useAuthContext()
+  // const pathname = usePathname()
+  // const router = useRouter()
+  // const params = useSearchParams()
+  // const searchKeyParam = params.get('key')
+  // const pageParam = params.get('page')
 
-    return [...books].filter(
-      (book) =>
-        book.name.toLowerCase().includes(searchBooksKey.trim().toLowerCase()) ||
-        book.author.toLowerCase().includes(searchBooksKey.trim().toLowerCase()),
-    )
-  }, [books, searchBooksKey])
+  // const searchedBooks = useMemo(() => {
+  //   if (searchBooksKey.length === 0) return [...books]
 
-  const totalPages = Math.ceil(searchedBooks.length / BOOKS_PER_PAGE)
-  const filteredBooks = [...searchedBooks].splice(
-    page * BOOKS_PER_PAGE,
-    BOOKS_PER_PAGE,
-  )
+  //   return [...books].filter(
+  //     (book) =>
+  //       book.name.toLowerCase().includes(searchBooksKey.trim().toLowerCase()) ||
+  //       book.author.toLowerCase().includes(searchBooksKey.trim().toLowerCase()),
+  //   )
+  // }, [books, searchBooksKey])
 
-  const handleGetBookById = (id: string): GetBookResponse => {
-    const exisitingBook = books.find((book) => book.id === id)
+  // const totalPages = Math.ceil(searchedBooks.length / BOOKS_PER_PAGE)
+  // const filteredBooks = [...searchedBooks].splice(
+  //   page * BOOKS_PER_PAGE,
+  //   BOOKS_PER_PAGE,
+  // )
 
-    if (!exisitingBook)
-      return {
-        success: false,
-        message: 'No book found',
-      }
+  // const handleGetBookById = (id: string): GetBookResponse => {
+  //   const exisitingBook = books.find((book) => book.id === id)
 
-    return {
-      success: true,
-      message: 'Book found!',
-      book: exisitingBook,
+  //   if (!exisitingBook)
+  //     return {
+  //       success: false,
+  //       message: 'No book found',
+  //     }
+
+  //   return {
+  //     success: true,
+  //     message: 'Book found!',
+  //     book: exisitingBook,
+  //   }
+  // }
+
+  const handleAddBook = async (value: CreateBookInput) => {
+    try {
+      await booksService.create(value)
+      mutate()
+    } catch (error) {
+      console.log(error)
     }
   }
 
-  const handleAddBook = (data: NewBook) => {
-    const existingBook = books.find(
-      ({ id, ...rest }) => JSON.stringify(data) === JSON.stringify(rest),
-    )
-    if (existingBook) return alert('This book is existing')
-    const newBook = {
-      id: uuid(),
-      ...data,
-    }
-    const tempBooks = [...books, newBook]
-
-    setBooks(tempBooks)
-    saveBooksToLocalStorage(tempBooks)
-  }
-
-  const handleUpdateBook = (data: Book) => {
-    const updateBook = books.find(({ id }) => data.id === id)
-
-    if (!updateBook) return alert('Not found!')
-
-    if (JSON.stringify(data) === JSON.stringify(updateBook)) return
-
-    const existingBook = books.find(
-      ({ id, ...rest }) => JSON.stringify(data) === JSON.stringify(rest),
-    )
-    if (existingBook)
-      return alert('These information is same as one other book!')
-
-    const tempBooks = [...books].map((book) => {
-      if (book.id !== updateBook.id) return book
-      return data
-    })
-
-    setBooks(tempBooks)
-    saveBooksToLocalStorage(tempBooks)
-  }
-
-  const handleDeleteBook = (id: string) => {
-    const existingBookIndex = books.findIndex((item) => item.id === id)
-    if (existingBookIndex < 0) return
-
-    const tempBooks: Book[] = [...books]
-    tempBooks.splice(existingBookIndex, 1)
-    setBooks(tempBooks)
-    saveBooksToLocalStorage(tempBooks)
-
-    if (pathname !== '/') {
-      router.push('/')
+  const handleUpdateBook = async (value: UpdateBookInput) => {
+    try {
+      await booksService.update(value)
+      mutate()
+    } catch (error) {
+      console.log(error)
     }
   }
 
-  const syncFilterParamsWithUrl = () => {
-    if (!isLogin) return
-    const filterParams = new URLSearchParams({
-      key: searchBooksKey.trim(),
-      page: `${page + 1}`,
-    }).toString()
-    router.push(`?${filterParams}`)
+  const handleDeleteBook = async (id: number) => {
+    try {
+      await booksService.delete(id)
+      mutate()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  const debounceSyncFilterParams = useCallback(
-    debounce(syncFilterParamsWithUrl, 500),
-    [searchBooksKey, page],
-  )
+  // const syncFilterParamsWithUrl = () => {
+  //   if (!isLogin) return
+  //   const filterParams = new URLSearchParams({
+  //     key: searchBooksKey.trim(),
+  //     page: `${page + 1}`,
+  //   }).toString()
+  //   router.push(`?${filterParams}`)
+  // }
 
-  useEffect(() => {
-    const formatPageParam = validatePageParam(pageParam ?? '', totalPages)
-    if (totalPages === 0 || (page !== 0 && formatPageParam !== page)) setPage(0)
-  }, [totalPages])
+  // const debounceSyncFilterParams = useCallback(
+  //   debounce(syncFilterParamsWithUrl, 500),
+  //   [searchBooksKey, page],
+  // )
 
-  useEffect(() => {
-    debounceSyncFilterParams()
-  }, [searchBooksKey, page])
+  // useEffect(() => {
+  //   const formatPageParam = validatePageParam(pageParam ?? '', totalPages)
+  //   if (totalPages === 0 || (page !== 0 && formatPageParam !== page)) setPage(0)
+  // }, [totalPages])
 
-  useEffect(() => {
-    if (searchKeyParam) setSearchBooksKey(searchKeyParam)
+  // useEffect(() => {
+  //   debounceSyncFilterParams()
+  // }, [searchBooksKey, page])
 
-    if (!pageParam) return
+  // useEffect(() => {
+  //   if (searchKeyParam) setSearchBooksKey(searchKeyParam)
 
-    const formatPageParam = validatePageParam(pageParam, totalPages)
-    setPage(formatPageParam - 1)
-  }, [])
+  //   if (!pageParam) return
+
+  //   const formatPageParam = validatePageParam(pageParam, totalPages)
+  //   setPage(formatPageParam - 1)
+  // }, [])
 
   return {
-    filteredBooks,
-    totalPages,
-    page,
-    setPage,
-    handleGetBookById,
+    // filteredBooks,
+    // totalPages,
+    // page,
+    // setPage,
+    // handleGetBookById,
     handleAddBook,
     handleUpdateBook,
     handleDeleteBook,

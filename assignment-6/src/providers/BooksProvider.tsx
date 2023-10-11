@@ -11,65 +11,68 @@ import {
   useMemo,
   useState,
 } from 'react'
+import useSWR from 'swr'
 import useBooks from '../hooks/useBooks'
-import { DEFAULT_BOOKS } from '../utils/constants'
-import { Book, GetBookResponse } from '../utils/types'
+import {
+  Book,
+  CreateBookInput,
+  GetBookResponse,
+  UpdateBookInput,
+} from '../utils/types'
+import booksService from '../services/books'
 
 type BooksContextValues = {
   books: Book[]
+  isLoading: boolean
+  page: number
   searchBooksKey: string
   setSearchBooksKey: Dispatch<SetStateAction<string>>
 } & ReturnType<typeof useBooks>
 
 const defaultBooksContextValues: BooksContextValues = {
   books: [],
+  isLoading: false,
   searchBooksKey: '',
   setSearchBooksKey: () => {},
-  filteredBooks: [],
-  handleGetBookById: () => ({}) as GetBookResponse,
-  handleAddBook: () => {},
-  handleDeleteBook: () => {},
-  handleUpdateBook: () => {},
   page: 0,
-  setPage: () => {},
-  totalPages: 1,
+  // handleGetBookById: () => ({}) as GetBookResponse,
+  handleAddBook: async () => {},
+  handleDeleteBook: async () => {},
+  handleUpdateBook: async () => {},
+  // page: 0,
+  // setPage: () => {},
+  // totalPages: 1,
 }
 
 const BooksContext = createContext(defaultBooksContextValues)
 
 const BooksProvider = ({ children }: { children: ReactNode }) => {
   const [searchBooksKey, setSearchBooksKey] = useState('')
-  const [books, setBooks] = useState<Book[]>(() => {
-    if (typeof window === 'undefined') return DEFAULT_BOOKS
-    const storedBooks = window.localStorage.getItem('books')
-    if (storedBooks) {
-      try {
-        return JSON.parse(storedBooks) as Book[]
-      } catch (error) {
-        return DEFAULT_BOOKS
-      }
-    }
-    return DEFAULT_BOOKS
+  const {
+    data: books,
+    mutate,
+    isLoading,
+  } = useSWR('getAllBooks', async () => {
+    const { data } = await booksService.getAll()
+    return data.data
   })
+
   const [page, setPage] = useState(0)
 
   const booksUtils = useBooks({
-    books,
-    page,
-    searchBooksKey,
-    setBooks,
-    setPage,
-    setSearchBooksKey,
+    mutate,
   })
 
   const value: BooksContextValues = useMemo(
     () => ({
-      books,
+      books: books ?? [],
+      isLoading,
       searchBooksKey,
       setSearchBooksKey,
+      page,
       ...booksUtils,
     }),
-    [searchBooksKey, books, booksUtils],
+    [searchBooksKey, books],
   )
 
   return <BooksContext.Provider value={value}>{children}</BooksContext.Provider>
