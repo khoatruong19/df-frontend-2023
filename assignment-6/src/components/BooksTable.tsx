@@ -18,19 +18,20 @@ const BooksTable = () => {
           </tr>
         </thead>
         <tbody id="books-table-body">
-          {isLoading && <p>Loading...</p>}
           {books &&
             books.map((book, index) => (
               <BookRow
                 deleteBook={() => handleDeleteBook(book.id)}
                 key={book.id}
                 book={book}
-                order={index + page * BOOKS_PER_PAGE + 1}
+                order={index + (page - 1) * BOOKS_PER_PAGE + 1}
               />
             ))}
         </tbody>
       </table>
-      {books && books.length === 0 && (
+      {isLoading && <p className="text-center mt-4">Loading...</p>}
+
+      {!isLoading && books && books.length === 0 && (
         <h1 className="text-center text-2xl mt-10 text-secondary">
           No books found!
         </h1>

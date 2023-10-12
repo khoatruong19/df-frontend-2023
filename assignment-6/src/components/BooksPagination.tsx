@@ -3,7 +3,8 @@ import { ArrowLeftCircle, ArrowRightCircle } from 'lucide-react'
 import { useBooksContext } from '../providers/BooksProvider'
 
 const BooksPagination = () => {
-  const { totalPages, page, setPage } = useBooksContext()
+  const { totalPages, page, handleBackPage, handleNextPage, handleSelectPage } =
+    useBooksContext()
 
   return (
     <section
@@ -14,16 +15,16 @@ const BooksPagination = () => {
         className={`${
           page > 0 ? 'opacity-100' : 'opacity-0 cursor-default'
         } bg-transparent hover:text-secondary`}
-        onClick={() => setPage((prev) => prev - 1)}
-        disabled={!(page > 0)}
+        onClick={handleBackPage}
+        disabled={!(page > 1)}
       >
         <ArrowLeftCircle size={30} />
       </button>
       {Array.from({ length: totalPages }, (_, i) => i + 1).map((item, idx) => (
         <button
-          onClick={() => setPage(idx)}
+          onClick={() => handleSelectPage(idx + 1)}
           key={item}
-          className={`${idx === page ? 'selected' : ''} page-button`}
+          className={`${idx + 1 === page ? 'selected' : ''} page-button`}
         >
           {item}
         </button>
@@ -32,7 +33,7 @@ const BooksPagination = () => {
         className={`${
           page < totalPages - 1 ? 'opacity-100' : 'opacity-0 cursor-default'
         } bg-transparent hover:text-secondary`}
-        onClick={() => setPage((prev) => prev + 1)}
+        onClick={handleNextPage}
         disabled={!(page < totalPages - 1)}
       >
         <ArrowRightCircle size={30} />

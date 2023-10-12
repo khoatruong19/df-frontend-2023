@@ -30,7 +30,7 @@ const useAuth = ({ setIsLogin, setEmail }: UseAuthProps) => {
     deleteToken()
     setIsLogin(false)
     setEmail('')
-    router.push('/login')
+    router.replace('/login')
   }
 
   const me = async () => {

@@ -16,6 +16,7 @@ import {
 } from '../utils/helpers'
 import {
   Book,
+  BooksMetadata,
   CreateBookInput,
   GetBookResponse,
   NewBook,
@@ -27,16 +28,22 @@ import booksService from '../services/books'
 
 type UseBooksProps = {
   // searchBooksKey: string
-  // setSearchBooksKey: Dispatch<SetStateAction<string>>
   // books: Book[]
   // setBooks: Dispatch<SetStateAction<Book[]>>
   // page: number
   // setPage: Dispatch<SetStateAction<number>>
-  mutate: KeyedMutator<Book[]>
+  mutate: KeyedMutator<{
+    data: Book[]
+    metadata: BooksMetadata
+  }>
+  page: number
+  setPage: Dispatch<SetStateAction<number>>
+  totalPages: number
+  setSearchBooksKey: Dispatch<SetStateAction<string>>
 }
 
 const useBooks = (props: UseBooksProps) => {
-  const { mutate } = props
+  const { mutate, page, setPage, totalPages, setSearchBooksKey } = props
 
   // const { isLogin } = useAuthContext()
   // const pathname = usePathname()
@@ -61,21 +68,21 @@ const useBooks = (props: UseBooksProps) => {
   //   BOOKS_PER_PAGE,
   // )
 
-  // const handleGetBookById = (id: string): GetBookResponse => {
-  //   const exisitingBook = books.find((book) => book.id === id)
+  const handleNextPage = () => {
+    if (page >= totalPages) return
+    setPage(page + 1)
+  }
 
-  //   if (!exisitingBook)
-  //     return {
-  //       success: false,
-  //       message: 'No book found',
-  //     }
+  const handleBackPage = () => {
+    if (page <= 1) return
+    setPage(page - 1)
+  }
 
-  //   return {
-  //     success: true,
-  //     message: 'Book found!',
-  //     book: exisitingBook,
-  //   }
-  // }
+  const handleSelectPage = (selectedPage: number) => {
+    setPage(selectedPage)
+  }
+
+  const handleChangeSearchValue = (value: string) => setSearchBooksKey(value)
 
   const handleAddBook = async (value: CreateBookInput) => {
     try {
@@ -145,6 +152,10 @@ const useBooks = (props: UseBooksProps) => {
     handleAddBook,
     handleUpdateBook,
     handleDeleteBook,
+    handleNextPage,
+    handleBackPage,
+    handleSelectPage,
+    handleChangeSearchValue,
   }
 }
 

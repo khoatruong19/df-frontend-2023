@@ -58,7 +58,7 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
     setOpenTopicOptions(false)
   }
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: BookSchemaType) => {
     if (!updateBookData) {
       handleAddBook({ ...data, topicId: selectTopic.id })
     } else
@@ -81,14 +81,14 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
     setValue('name', rest.name)
     setValue('author', rest.author)
     setSelectTopic(rest.topic)
-  }, [updateBookData])
+  }, [updateBookData, setValue])
 
   useEffect(() => {
     if (!updateBookData) {
       reset()
       setSelectTopic(DEFAULT_TOPIC)
     }
-  }, [updateBookData])
+  }, [updateBookData, reset])
 
   return (
     <div className="text-black">

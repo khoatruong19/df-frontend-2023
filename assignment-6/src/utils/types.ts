@@ -19,6 +19,12 @@ export type GetBookResponse = {
   book?: Book
 }
 
+export type BooksMetadata = {
+  page: number
+  pageSize: number
+  totalPages: number
+}
+
 export type LoginInput = {
   email: string
   password: string
@@ -27,6 +33,12 @@ export type LoginInput = {
 export type LoginResponse = {
   email: string
   accessToken: string
+}
+
+export type BooksQueryParams = {
+  page?: number
+  pageSize?: number
+  query?: string
 }
 
 export type CreateBookInput = {
