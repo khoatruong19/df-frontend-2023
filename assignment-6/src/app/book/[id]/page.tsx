@@ -9,6 +9,7 @@ import { useBooksContext } from '../../../providers/BooksProvider'
 import { MODALS, useModalContext } from '../../../providers/ModalProvider'
 import { DeleteBookConfirmationProps } from '../../../components/modals/DeleteBookConfirmation'
 import booksService from '../../../services/books'
+import { QUERY_KEYS } from '../../../utils/constants'
 
 type BookDetailProps = {
   params: { id: string }
@@ -22,7 +23,7 @@ const BookDetail = ({ params: { id } }: BookDetailProps) => {
     data: book,
     isLoading,
     error,
-  } = useSWR('getBookById', async () => {
+  } = useSWR(QUERY_KEYS.GET_BOOK_BY_ID, async () => {
     const { data } = await booksService.getById(Number(id))
     return data.data
   })

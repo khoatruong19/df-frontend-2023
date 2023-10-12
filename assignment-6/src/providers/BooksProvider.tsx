@@ -9,6 +9,7 @@ import useBooks from '../hooks/useBooks'
 import booksService from '../services/books'
 import { Book } from '../utils/types'
 import { useAuthContext } from './AuthProvider'
+import { QUERY_KEYS } from '../utils/constants'
 
 type BooksContextValues = {
   books: Book[]
@@ -47,7 +48,7 @@ const BooksProvider = ({ children }: { children: ReactNode }) => {
     mutate,
     isLoading,
   } = useSWR(
-    isLogin ? ['getAllBooks', page, searchBooksKey] : null,
+    isLogin ? [QUERY_KEYS.GET_ALL_BOOKS, page, searchBooksKey] : null,
     async () => {
       const { data } = await booksService.getAll({
         page,

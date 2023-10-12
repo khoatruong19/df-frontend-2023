@@ -13,6 +13,7 @@ import { useBooksContext } from '../../providers/BooksProvider'
 import { BookSchema, BookSchemaType } from '../../utils/schemas'
 import booksService from '../../services/books'
 import { useModalContext } from '../../providers/ModalProvider'
+import { QUERY_KEYS } from '../../utils/constants'
 
 const DEFAULT_TOPIC: BookTopic = {
   id: 1,
@@ -25,7 +26,7 @@ export type BookFormProps = {
 }
 
 const BookForm = ({ updateBookData = null }: BookFormProps) => {
-  const { data: topics } = useSWR('getAllTopics', async () => {
+  const { data: topics } = useSWR(QUERY_KEYS.GET_ALL_TOPICS, async () => {
     const { data } = await booksService.getTopics()
     return data.data
   })
