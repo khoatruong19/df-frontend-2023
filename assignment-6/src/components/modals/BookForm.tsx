@@ -1,7 +1,4 @@
 /* eslint-disable import/no-cycle */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 'use client'
@@ -11,11 +8,11 @@ import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useModalContext } from '../../providers/ModalProvider'
 import { Book, BookTopic } from '../../utils/types'
 import { useBooksContext } from '../../providers/BooksProvider'
 import { BookSchema, BookSchemaType } from '../../utils/schemas'
 import booksService from '../../services/books'
+import { useModalContext } from '../../providers/ModalProvider'
 
 const DEFAULT_TOPIC: BookTopic = {
   id: 1,
@@ -32,7 +29,7 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
     const { data } = await booksService.getTopics()
     return data.data
   })
-  const [selectTopic, setSelectTopic] = useState(
+  const [selectTopic, setSelectTopic] = useState<BookTopic>(
     topics ? topics[0] : DEFAULT_TOPIC,
   )
   const [openTopicOptions, setOpenTopicOptions] = useState(false)
@@ -116,7 +113,8 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
         </div>
         <div className="field-control">
           <label>Topic</label>
-          <div
+          <button
+            type="button"
             className="hover-opacity-desc p-2 border-2 rounded-md flex items-center justify-between"
             onClick={handleToggleOpenTopicOptions}
           >
@@ -124,21 +122,22 @@ const BookForm = ({ updateBookData = null }: BookFormProps) => {
             <div className="rotate-90">
               <ChevronsLeftRight size={15} strokeWidth={3} />
             </div>
-          </div>
+          </button>
           {openTopicOptions && (
             <ul className="absolute top-16 border-2 shadow-lg rounded-md w-full z-20 bg-white">
               {topics &&
                 topics.map((topic) => (
-                  <li
-                    className={`px-2 py-2.5 ${
-                      selectTopic === topic
-                        ? 'bg-secondary/30'
-                        : 'hover-opacity-desc hover:bg-secondary/30'
-                    }`}
-                    key={topic.code}
-                    onClick={() => handleSelectTopic(topic)}
-                  >
-                    {topic.name}
+                  <li key={topic.code}>
+                    <button
+                      className={`px-2 py-2.5 w-full text-left ${
+                        selectTopic === topic
+                          ? 'bg-secondary/30'
+                          : 'hover-opacity-desc hover:bg-secondary/30'
+                      }`}
+                      onClick={() => handleSelectTopic(topic)}
+                    >
+                      {topic.name}
+                    </button>
                   </li>
                 ))}
             </ul>

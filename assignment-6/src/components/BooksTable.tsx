@@ -4,7 +4,7 @@ import { useBooksContext } from '../providers/BooksProvider'
 import { BOOKS_PER_PAGE } from '../utils/constants'
 
 const BooksTable = () => {
-  const { books, isLoading, page, handleDeleteBook } = useBooksContext()
+  const { books, isLoading = true, page, handleDeleteBook } = useBooksContext()
   return (
     <section id="books-table" className="mt-20 min-h-[370px] overflow-x-auto">
       <table className="w-full border-2">
@@ -31,11 +31,11 @@ const BooksTable = () => {
       </table>
       {isLoading && <p className="text-center mt-4">Loading...</p>}
 
-      {!isLoading && books && books.length === 0 && (
+      {/* {!isLoading && books && books.length === 0 && (
         <h1 className="text-center text-2xl mt-10 text-secondary">
           No books found!
         </h1>
-      )}
+      )} */}
     </section>
   )
 }

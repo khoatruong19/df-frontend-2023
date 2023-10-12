@@ -10,7 +10,7 @@ type ModalLayoutProps = {
 const ModalLayout = (props: ModalLayoutProps) => {
   const { children, isOpen, setIsOpen } = props
 
-  const wrapperRef = useRef(null)
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
 
   useClickOutside(wrapperRef, () => setIsOpen(false))
 

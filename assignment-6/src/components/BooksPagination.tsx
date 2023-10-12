@@ -13,7 +13,7 @@ const BooksPagination = () => {
     >
       <button
         className={`${
-          page > 0 ? 'opacity-100' : 'opacity-0 cursor-default'
+          page > 1 ? 'opacity-100' : 'opacity-0 cursor-default'
         } bg-transparent hover:text-secondary`}
         onClick={handleBackPage}
         disabled={!(page > 1)}
@@ -31,10 +31,10 @@ const BooksPagination = () => {
       ))}
       <button
         className={`${
-          page < totalPages - 1 ? 'opacity-100' : 'opacity-0 cursor-default'
+          page < totalPages ? 'opacity-100' : 'opacity-0 cursor-default'
         } bg-transparent hover:text-secondary`}
         onClick={handleNextPage}
-        disabled={!(page < totalPages - 1)}
+        disabled={!(page < totalPages)}
       >
         <ArrowRightCircle size={30} />
       </button>

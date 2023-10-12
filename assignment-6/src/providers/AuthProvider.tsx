@@ -39,11 +39,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   )
 
   useEffect(() => {
-    if (!isLogin) {
-      router.replace('/login')
-      return
-    }
-    if (pathname === '/login') router.push('/')
+    if (isLogin && pathname === '/login') router.push('/')
   }, [isLogin, router, pathname])
 
   useEffect(() => {

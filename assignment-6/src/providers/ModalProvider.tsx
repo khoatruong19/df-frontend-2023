@@ -39,7 +39,7 @@ const defaultModalContextValues: ModalContextValues = {
   closeModal: () => {},
 }
 
-const ModalContext = createContext(defaultModalContextValues)
+export const ModalContext = createContext(defaultModalContextValues)
 
 const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false)

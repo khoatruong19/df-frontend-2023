@@ -2,26 +2,13 @@
 
 'use client'
 
-import {
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react'
+import { useSearchParams } from 'next/navigation'
+import { ReactNode, createContext, useContext, useMemo } from 'react'
 import useSWR from 'swr'
 import useBooks from '../hooks/useBooks'
-import {
-  Book,
-  CreateBookInput,
-  GetBookResponse,
-  UpdateBookInput,
-} from '../utils/types'
 import booksService from '../services/books'
-import { BOOKS_PER_PAGE } from '../utils/constants'
+import { Book } from '../utils/types'
+import { useAuthContext } from './AuthProvider'
 
 type BooksContextValues = {
   books: Book[]
@@ -49,29 +36,35 @@ const defaultBooksContextValues: BooksContextValues = {
 const BooksContext = createContext(defaultBooksContextValues)
 
 const BooksProvider = ({ children }: { children: ReactNode }) => {
-  const [searchBooksKey, setSearchBooksKey] = useState('')
-  const [page, setPage] = useState(1)
+  const params = useSearchParams()
+  const page = params.get('page') ? Number(params.get('page')) : 1
+  const searchBooksKey = params.get('key') ?? ''
+
+  const { isLogin } = useAuthContext()
 
   const {
     data: booksResponse,
     mutate,
     isLoading,
-  } = useSWR(['getAllBooks', page, searchBooksKey], async () => {
-    const { data } = await booksService.getAll({
-      page,
-      query: searchBooksKey,
-    })
-    return data
-  })
+  } = useSWR(
+    isLogin ? ['getAllBooks', page, searchBooksKey] : null,
+    async () => {
+      const { data } = await booksService.getAll({
+        page,
+        query: searchBooksKey,
+      })
+      return data
+    },
+  )
 
   const totalPages = booksResponse?.metadata.totalPages ?? 1
 
   const booksUtils = useBooks({
     mutate,
+    isLoading,
     page,
-    setPage,
+    searchBooksKey,
     totalPages,
-    setSearchBooksKey,
   })
 
   const value: BooksContextValues = useMemo(

@@ -5,9 +5,9 @@ import { useDebounce } from '../hooks/useDebounce'
 import { useBooksContext } from '../providers/BooksProvider'
 
 const SearchBookInput = () => {
-  const { handleChangeSearchValue } = useBooksContext()
+  const { searchBooksKey, handleChangeSearchValue } = useBooksContext()
 
-  const [value, setValue] = useState<string>('')
+  const [value, setValue] = useState<string>(searchBooksKey)
   const debouncedValue = useDebounce<string>(value, 500)
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
