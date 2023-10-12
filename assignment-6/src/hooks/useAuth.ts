@@ -22,6 +22,7 @@ const useAuth = ({ setIsLogin, setEmail }: UseAuthProps) => {
       setEmail(responseData.email)
       setToken(responseData.accessToken)
     } catch (error) {
+      if (error.response.data) return alert(error.response.data.message)
       console.log(error)
     }
   }

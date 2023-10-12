@@ -31,11 +31,11 @@ const BooksTable = () => {
       </table>
       {isLoading && <p className="text-center mt-4">Loading...</p>}
 
-      {/* {!isLoading && books && books.length === 0 && (
+      {!isLoading && books && books.length === 0 && (
         <h1 className="text-center text-2xl mt-10 text-secondary">
           No books found!
         </h1>
-      )} */}
+      )}
     </section>
   )
 }
