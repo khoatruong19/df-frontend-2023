@@ -1,27 +1,51 @@
-# Type-safe client server
+# Frontend Training 2023
 
-Building on the momentum from [Assignment 06](../assignment-6/), this assignment emphasizes the importance of type-safety between the frontend and backend. By ensuring that both ends speak the same **"type"** language, we mitigate risks, reduce potential bugs, and enhance the robustness of our applications.
+Welcome to the Frontend Training 2023 repository! This is where you'll find exercises and templates meant to guide you through 8 training sessions on frontend development organized by [Dwarves Foundation](https://d.foundation/).
 
-## **Requirements**
+## Get Started
 
-1. Start with the Next.js project you developed in [Assignment 06](../assignment-6/).
-2. Make use of [Orval](https://orval.dev/) to pull the schema documentation from the [**Bookstore API**](https://develop-api.bookstore.dwarvesf.com/swagger/index.html). This tool will allow you to ensure type-safety by generating client-side types based on the server's API schema.
-3. With the schema in hand, leverage SWR to fetch data and ensure that the frontend correctly interprets and displays the Bookstore API responses.
-4. For guidance on setting up **`Orval`** within your Next.js project, consider referencing the [Next.js Boilerplate](https://github.com/dwarvesf/nextjs-boilerplate). This resource offers a structured way to integrate type-safe practices into your project.
+1. **Fork the Repository:** If you're a part of this class, kindly [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo#forking-a-repository) this repository.
+2. **Set Your Fork to Public:** This helps us in evaluating and collaborating on your assignments.
+3. **Syncing and Updates:** After every session, we will push relevant assignments here. Ensure you [sync your forked repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) to pull the exercise templates.
 
-### **Deliverables**
+## Assignments Schedule
 
-- Ensure your codebase is clean, readable, and strictly adheres to type-safe practices. Your client-side code should seamlessly match the server-side schema, minimizing type mismatches and potential errors.
-- Confirm the project's deployability. Ensure that there's a smooth data flow between the backend and frontend, with API responses accurately represented in the UI.
+| Day | Topic                                                                     | Deadline   |
+| --- | ------------------------------------------------------------------------- | ---------- |
+| 1   | [HTML, CSS & JavaScript](./assignment-1/)                                 | 21/09/2023 |
+| 2   | [React & State management](./assignment-2/)                               | 26/09/2023 |
+| 3   | [Tooling: Webpack, Babel, TypeScript, ESLint & Prettier](./assignment-3/) | 01/10/2023 |
+| 4   | [NextJS & TailwindCSS](./assignment-4/)                                   | 06/10/2023 |
+| 5   | [Form handling](./assignment-5/)                                          | 08/10/2023 |
+| 6   | [Authentication & API Integration](./assignment-6/)                       | 13/10/2023 |
+| 7   | [Type-safe client server](./assignment-7/)                                | 15/10/2023 |
+| 8   | Modern workflow & Deployment                                              |            |
 
-### **What We Are Looking For?**
+Stay tuned for updates on future assignments!
 
-- Mastery in integrating type-safe practices into your application. This isn't just about using tools but understanding the principle behind type-safety and its advantages.
-- Successful implementation of all listed requirements.
-- Clear progression from the previous assignments. We're keen to see how you've incorporated feedback and elevated the quality of your project.
+## Assignment Submission
 
-## **Submission**
+To submit your assignments, please ensure you have enabled the **Issues** feature in your forked repository. If it's disabled by default, you can enable it by navigating to `Settings > General` on your fork. Scroll down to the `Features` sub-section and check the `Issues` box.
 
-- All assignment-related code should reside in the **`/assignment-7`** directory. Please migrate necessary codes from prior assignments into this directory, ensuring a clear distinction between projects.
-- The submission deadline is **`15/10/2023`**.
-- Once you've finalized your work and confirmed its deployability, raise a Github issue in your forked repository titled "**Submission for Assignment 7**". Within the issue's description, include the demo link for easy access and review.
+![how to enable issue feature on fork](./assets/enable-issue-feature.png).
+
+Once enabled, follow these steps for each submission:
+
+1. **Code Submission**: Place your submitted code in the respective `/assignment-[number]` folder on your fork.
+2. **Deployment**: Deploy your project on a cloud service to generate a public preview link.
+3. **Issue Creation**: Open an issue in your forked repository with the title `Submission for assignment [number]`. Ensure you include the public preview link in the issue description. Refer to [this example issue](https://github.com/zlatanpham/df-frontend-2023/issues/1) for guidance.
+
+## Evaluation Criteria
+
+We evaluate assignments based on the following criteria:
+
+- **Timeliness**: The assignment must be submitted by the deadline (based on the time of the last commit in the assignment folder).
+- **Requirements Fulfillment**: The assignment must fulfill all mandatory requirements.
+
+Our team will carefully assess your submissions. After evaluation, we'll share the results and offer feedback on the corresponding open issue.
+
+## Support
+
+Should you have any questions or run into any issues, don't hesitate to reach out on [our Discord](https://discord.com/invite/Y2vvH9rQE4). We are happy to help!
+
+Best of luck with your training! 🌟

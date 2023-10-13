@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: 245, 232, 183;
+    --secondary: 205, 92, 8;
+    --success: 106, 156, 137;
+    --danger: 254, 0, 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary: 245 232 183;
+      --secondary: 205 92 8;
+      --success: 106 156 137;
+      --danger: 254 0 0;
+    }
+  }
+
+  :root[data-theme='light'] {
+    --primary: 245 232 183;
+    --secondary: 205 92 8;
+    --success: 106 156 137;
+    --danger: 254 0 0;
+    --main-text: 0 0 0;
+    --pagination-button-text: 0 0 0;
+  }
+
+  :root[data-theme='dark'] {
+    --primary: 82 109 130;
+    --secondary: 39 55 77;
+    --success: 106 156 137;
+    --danger: 212 173 252;
+    --main-text: 255 255 255;
+    --pagination-button-text: 0 0 0;
+  }
+}
+
+body {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#modals {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+}
+
+@layer components {
+  #modals > div {
+    @apply relative w-[95%] md:w-[400px] py-3 px-4;
+  }
+
+  .field-control {
+    @apply flex flex-col mt-2 relative;
+  }
+
+  .field-control > input {
+    @apply outline-none p-2 border-2 rounded-md;
+  }
+
+  .field-control > label {
+    @apply text-sm font-medium;
+  }
+
+  #books-table td,
+  th {
+    @apply border-[3px] border-secondary py-4 px-2 text-xs md:text-base;
+  }
+  #books-table th {
+    @apply bg-secondary/80 text-mainTextColor md:text-lg;
+  }
+
+  #books-table tr:nth-child(even) {
+    @apply bg-secondary/30;
+  }
+
+  #books-table .book-name-col {
+    @apply max-w-[90px] md:max-w-[200px] lg:max-w-[300px] xl:max-w-[40%] truncate;
+  }
+
+  #books-table .book-author-col {
+    @apply max-w-[90px] md:max-w-[100px] lg:max-w-[200px] xl:max-w-[20%] truncate;
+  }
+
+  .hover-opacity-desc {
+    @apply cursor-pointer hover:opacity-75;
+  }
+
+  #books-pagination .page-button {
+    @apply py-1.5 px-3 rounded-md bg-white text-paginationBtnTextColor;
+  }
+
+  #books-pagination .page-button.selected {
+    @apply bg-secondary/80 font-semibold cursor-default;
+  }
+}
